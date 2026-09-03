@@ -2693,3 +2693,131 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   .cart-toast { right: 14px; left: 14px; bottom: 86px; min-width: 0; width: auto; }
   [dir="rtl"] .cart-toast { right: 14px; left: 14px; }
 }
+
+
+/* =========================================
+   TOP CART TOAST + MOBILE HEADER + HISTORY UX
+========================================= */
+
+.cart-toast {
+  top: 104px !important;
+  bottom: auto !important;
+  right: 24px;
+  left: auto;
+}
+
+[dir="rtl"] .cart-toast {
+  right: auto;
+  left: 24px;
+}
+
+.cart-toast-removed .cart-toast-icon {
+  background: #fff0f0;
+  color: var(--danger);
+}
+
+@media (max-width: 760px) {
+  .header {
+    position: sticky !important;
+    top: 0;
+    z-index: 2000;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .header-inner {
+    width: 100%;
+    min-height: auto;
+    padding: 8px 12px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "logo spacer actions"
+      "nav nav nav";
+    gap: 7px 10px;
+  }
+
+  .logo-button {
+    grid-area: logo;
+    justify-self: start;
+  }
+
+  .logo {
+    width: 145px;
+    height: 46px;
+  }
+
+  .header-actions {
+    grid-area: actions;
+    justify-self: end;
+    gap: 6px;
+  }
+
+  .language-button {
+    min-width: 48px;
+    height: 40px;
+    padding: 0 9px;
+  }
+
+  .cart-header-button {
+    min-width: 48px;
+    width: 48px;
+    height: 40px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .cart-header-button svg {
+    width: 19px;
+  }
+
+  .header-quote {
+    display: none;
+  }
+
+  .nav {
+    grid-area: nav;
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    border-top: 1px solid #edf2f6;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav button {
+    flex: 0 0 auto;
+    height: 42px;
+    padding: 0 13px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .nav button::after {
+    bottom: 2px;
+  }
+
+  .cart-toast {
+    top: 112px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    grid-template-columns: auto 1fr auto;
+    z-index: 3000;
+  }
+
+  [dir="rtl"] .cart-toast {
+    right: 12px !important;
+    left: 12px !important;
+  }
+}
