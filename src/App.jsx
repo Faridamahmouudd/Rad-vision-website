@@ -146,6 +146,28 @@ function App() {
   const [cartNotice, setCartNotice] = useState(null);
   const cartNoticeTimer = useRef(null);
 
+  const mergeItemIntoCart = (newItem) => {
+    setCart((current) => {
+      const sameIndex = current.findIndex((item) =>
+        item.productId === newItem.productId &&
+        (item.size || "") === (newItem.size || "") &&
+        (item.color || "") === (newItem.color || "") &&
+        (item.weight || "") === (newItem.weight || "") &&
+        (item.dimensions || "") === (newItem.dimensions || "")
+      );
+
+      if (sameIndex === -1) {
+        return [...current, newItem];
+      }
+
+      return current.map((item, index) =>
+        index === sameIndex
+          ? { ...item, quantity: item.quantity + newItem.quantity }
+          : item
+      );
+    });
+  };
+
   const showCartNotice = (productName) => {
     setCartNotice(productName);
     if (cartNoticeTimer.current) clearTimeout(cartNoticeTimer.current);
@@ -593,7 +615,7 @@ function App() {
       quantity,
     };
 
-    setCart((current) => [...current, newItem]);
+    mergeItemIntoCart(newItem);
     showCartNotice(newItem.name);
   };
 
@@ -621,7 +643,7 @@ function App() {
       quantity,
     };
 
-    setCart((current) => [...current, newItem]);
+    mergeItemIntoCart(newItem);
     showCartNotice(newItem.name);
   };
 
@@ -632,11 +654,16 @@ function App() {
   };
 
   const addSimpleProductToCart = ({ productId, name, image, size, price, details }) => {
-    setCart((current) => [...current, {
+    mergeItemIntoCart({
       id: `${productId}-${size || "standard"}-${Date.now()}`,
-      productId, name, image, size: size || "Standard",
-      dimensions: details || "", price, quantity,
-    }]);
+      productId,
+      name,
+      image,
+      size: size || "Standard",
+      dimensions: details || "",
+      price,
+      quantity,
+    });
     showCartNotice(name);
   };
 
