@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -143,6 +143,14 @@ function App() {
 
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
+  const [cartNotice, setCartNotice] = useState(null);
+  const cartNoticeTimer = useRef(null);
+
+  const showCartNotice = (productName) => {
+    setCartNotice(productName);
+    if (cartNoticeTimer.current) clearTimeout(cartNoticeTimer.current);
+    cartNoticeTimer.current = setTimeout(() => setCartNotice(null), 2400);
+  };
 
   const isArabic = language === "ar";
 
@@ -586,6 +594,7 @@ function App() {
     };
 
     setCart((current) => [...current, newItem]);
+    showCartNotice(newItem.name);
   };
 
   const buyPlasticNow = () => {
@@ -613,6 +622,7 @@ function App() {
     };
 
     setCart((current) => [...current, newItem]);
+    showCartNotice(newItem.name);
   };
 
   const buyGlossyNow = () => {
@@ -627,6 +637,7 @@ function App() {
       productId, name, image, size: size || "Standard",
       dimensions: details || "", price, quantity,
     }]);
+    showCartNotice(name);
   };
 
   const buySimpleProductNow = (item) => {
@@ -797,6 +808,22 @@ function App() {
       )}
 
       <Footer logo={logo} isArabic={isArabic} />
+
+      {cartNotice && (
+        <div className="cart-toast" role="status" aria-live="polite">
+          <span className="cart-toast-icon"><Check size={18} /></span>
+          <div>
+            <strong>{isArabic ? "تمت الإضافة للسلة" : "Added to cart"}</strong>
+            <small>{cartNotice}</small>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setPage("cart"); setCartNotice(null); window.scrollTo(0, 0); }}
+          >
+            {isArabic ? "عرض السلة" : "View Cart"}
+          </button>
+        </div>
+      )}
 
       <button
         className="floating-whatsapp"
@@ -2346,13 +2373,45 @@ function CheckoutPage({
   cartTotal,
   setPage,
 }) {
+  const [centerName, setCenterName] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [governorate, setGovernorate] = useState("");
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const sendOrderToWhatsApp = (e) => {
+    e.preventDefault();
+
+    if (!cart.length) {
+      alert(isArabic ? "السلة فارغة." : "Your cart is empty.");
+      return;
+    }
+
+    const orderLines = cart.map((item, index) => {
+      const extras = [item.size, item.color, item.weight, item.dimensions]
+        .filter(Boolean)
+        .join(" • ");
+      const lineTotal = (item.price * item.quantity).toLocaleString();
+
+      return `${index + 1}. ${item.name}\n${extras ? `${extras}\n` : ""}${isArabic ? "الكمية" : "Qty"}: ${item.quantity}\n${isArabic ? "السعر" : "Total"}: ${lineTotal} EGP`;
+    }).join("\n\n");
+
+    const message = isArabic
+      ? `مرحباً RAD VISION، أريد تأكيد الطلب التالي:\n\n${orderLines}\n\nالإجمالي: ${cartTotal.toLocaleString()} EGP\n\nبيانات العميل:\nاسم المركز: ${centerName}\nاسم المسؤول: ${contactName}\nرقم الهاتف: ${phone}\nالمحافظة: ${governorate}\nالعنوان: ${address}${notes ? `\nملاحظات: ${notes}` : ""}`
+      : `Hello RAD VISION, I would like to confirm the following order:\n\n${orderLines}\n\nTotal: ${cartTotal.toLocaleString()} EGP\n\nCustomer Details:\nCenter Name: ${centerName}\nContact Name: ${contactName}\nPhone: ${phone}\nGovernorate: ${governorate}\nAddress: ${address}${notes ? `\nNotes: ${notes}` : ""}`;
+
+    window.open(
+      `https://wa.me/201060004999?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   return (
     <main className="checkout-page">
       <div className="checkout-container">
-        <button
-          className="back-button"
-          onClick={() => setPage("cart")}
-        >
+        <button className="back-button" onClick={() => setPage("cart")}>
           <ArrowLeft />
           {isArabic ? "العودة للسلة" : "Back to Cart"}
         </button>
@@ -2360,101 +2419,73 @@ function CheckoutPage({
         <div className="checkout-grid">
           <section>
             <span className="small-title">CHECKOUT</span>
-
             <h1>{isArabic ? "بيانات الطلب" : "Checkout"}</h1>
 
-            <form
-              className="checkout-form"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="checkout-form" onSubmit={sendOrderToWhatsApp}>
               <div className="form-row">
                 <div className="form-field">
-                  <label>
-                    {isArabic ? "اسم المركز" : "Center Name"}
-                  </label>
-                  <input required />
+                  <label>{isArabic ? "اسم المركز" : "Center Name"}</label>
+                  <input value={centerName} onChange={(e) => setCenterName(e.target.value)} required />
                 </div>
-
                 <div className="form-field">
-                  <label>
-                    {isArabic ? "اسم المسؤول" : "Contact Name"}
-                  </label>
-                  <input required />
+                  <label>{isArabic ? "اسم المسؤول" : "Contact Name"}</label>
+                  <input value={contactName} onChange={(e) => setContactName(e.target.value)} required />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-field">
-                  <label>
-                    {isArabic ? "رقم الهاتف" : "Phone Number"}
-                  </label>
-                  <input type="tel" required />
+                  <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
+                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
                 </div>
-
                 <div className="form-field">
-                  <label>
-                    {isArabic ? "المحافظة" : "Governorate"}
-                  </label>
-                  <input required />
+                  <label>{isArabic ? "المحافظة" : "Governorate"}</label>
+                  <input value={governorate} onChange={(e) => setGovernorate(e.target.value)} required />
                 </div>
               </div>
 
               <div className="form-field">
-                <label>
-                  {isArabic ? "العنوان" : "Delivery Address"}
-                </label>
-                <input required />
+                <label>{isArabic ? "العنوان" : "Delivery Address"}</label>
+                <input value={address} onChange={(e) => setAddress(e.target.value)} required />
               </div>
 
               <div className="form-field">
                 <label>{isArabic ? "ملاحظات" : "Notes"}</label>
                 <textarea
                   rows="4"
-                  placeholder={
-                    isArabic
-                      ? "أي ملاحظات على الطلب..."
-                      : "Any order notes..."
-                  }
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder={isArabic ? "أي ملاحظات على الطلب..." : "Any order notes..."}
                 />
               </div>
 
-              <button className="place-order-button">
+              <button className="place-order-button" type="submit">
                 <MessageCircle />
-                {isArabic ? "تأكيد الطلب" : "Confirm Order"}
+                {isArabic ? "تأكيد الطلب على واتساب" : "Confirm Order on WhatsApp"}
               </button>
             </form>
           </section>
 
           <aside className="checkout-summary">
             <h2>{isArabic ? "طلبك" : "Your Order"}</h2>
-
             {cart.map((item) => (
               <div className="checkout-item" key={item.id}>
                 <img src={item.image} alt={item.name} />
-
                 <div>
                   <strong>{item.name}</strong>
-
                   <span>
                     {item.size}
                     {item.color ? ` • ${item.color}` : ""}
                     {item.weight ? ` • ${item.weight}` : ""}
-                    {" × "}
-                    {item.quantity}
+                    {" × "}{item.quantity}
                   </span>
                 </div>
-
-                <b>
-                  {(item.price * item.quantity).toLocaleString()} EGP
-                </b>
+                <b>{(item.price * item.quantity).toLocaleString()} EGP</b>
               </div>
             ))}
-
             <div className="checkout-total">
               <span>{isArabic ? "الإجمالي" : "Total"}</span>
-              <strong>
-                {cartTotal.toLocaleString()} EGP
-              </strong>
+              <strong>{cartTotal.toLocaleString()} EGP</strong>
             </div>
           </aside>
         </div>
