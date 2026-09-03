@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -168,8 +168,8 @@ function App() {
     });
   };
 
-  const showCartNotice = (productName) => {
-    setCartNotice(productName);
+  const showCartNotice = (productName, type = "added") => {
+    setCartNotice({ productName, type });
     if (cartNoticeTimer.current) clearTimeout(cartNoticeTimer.current);
     cartNoticeTimer.current = setTimeout(() => setCartNotice(null), 2400);
   };
@@ -528,6 +528,46 @@ function App() {
     [cart]
   );
 
+
+  const navigateToPage = (nextPage, extraState = {}) => {
+    window.history.pushState(
+      { page: nextPage, ...extraState },
+      "",
+      window.location.href
+    );
+    setPage(nextPage);
+  };
+
+  useEffect(() => {
+    // Give the initial page a state entry so browser/mobile Back moves inside the site first.
+    if (!window.history.state?.page) {
+      window.history.replaceState({ page: "home" }, "", window.location.href);
+    }
+
+    const handlePopState = (event) => {
+      const nextPage = event.state?.page || "home";
+      setPage(nextPage);
+
+      if (nextPage === "product") {
+        const productId = event.state?.productId;
+        const product = products.find((item) => item.id === productId);
+        if (product) setSelectedProduct(product);
+      } else if (nextPage === "printer") {
+        const printerId = event.state?.printerId;
+        const printer = printers.find((item) => item.id === printerId);
+        if (printer) setSelectedPrinter(printer);
+      } else {
+        setSelectedProduct(null);
+        setSelectedPrinter(null);
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [products, printers]);
+
   const scrollTo = (id) => {
     setPage("home");
 
@@ -539,7 +579,7 @@ function App() {
   };
 
   const goHome = () => {
-    setPage("home");
+    navigateToPage("home");
     setSelectedProduct(null);
     setSelectedPrinter(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -548,7 +588,7 @@ function App() {
   const openPrinter = (printer) => {
     setSelectedPrinter(printer);
     setSelectedImage(0);
-    setPage("printer");
+    navigateToPage("printer", { printerId: printer.id });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -559,7 +599,7 @@ function App() {
       setPlasticSize("A3");
       setPlasticColor("Blue");
       setQuantity(1);
-      setPage("product");
+      navigateToPage("product", { productId: product.id });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -570,7 +610,7 @@ function App() {
       setGlossySize("A3");
       setGlossyWeight("180 GSM");
       setQuantity(1);
-      setPage("product");
+      navigateToPage("product", { productId: product.id });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -582,7 +622,7 @@ function App() {
       if (product.id === "fuji-laser") setFujiLaserSize("8×10");
       if (product.id === "fuji-diht") setFujiDihtSize("8×10");
       if (product.id === "huq-film") setHuqFilmSize("8×10");
-      setPage("product");
+      navigateToPage("product", { productId: product.id });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -592,7 +632,7 @@ function App() {
       setQuantity(1);
       const firstVariant = catalogProducts[product.id]?.variants?.[0];
       setCatalogSize(firstVariant?.size || "");
-      setPage("product");
+      navigateToPage("product", { productId: product.id });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -621,7 +661,7 @@ function App() {
 
   const buyPlasticNow = () => {
     addPlasticToCart();
-    setPage("cart");
+    navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -649,7 +689,7 @@ function App() {
 
   const buyGlossyNow = () => {
     addGlossyToCart();
-    setPage("cart");
+    navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -669,7 +709,7 @@ function App() {
 
   const buySimpleProductNow = (item) => {
     addSimpleProductToCart(item);
-    setPage("cart");
+    navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -687,9 +727,9 @@ function App() {
   };
 
   const removeCartItem = (id) => {
-    setCart((current) =>
-      current.filter((item) => item.id !== id)
-    );
+    const removedItem = cart.find((item) => item.id === id);
+    setCart((current) => current.filter((item) => item.id !== id));
+    if (removedItem) showCartNotice(removedItem.name, "removed");
   };
 
   return (
@@ -831,21 +871,36 @@ function App() {
           cart={cart}
           cartTotal={cartTotal}
           setPage={setPage}
+          navigateToPage={navigateToPage}
         />
       )}
 
       <Footer logo={logo} isArabic={isArabic} />
 
       {cartNotice && (
-        <div className="cart-toast" role="status" aria-live="polite">
-          <span className="cart-toast-icon"><Check size={18} /></span>
+        <div
+          className={`cart-toast ${cartNotice.type === "removed" ? "cart-toast-removed" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="cart-toast-icon">
+            {cartNotice.type === "removed" ? <Trash2 size={18} /> : <Check size={18} />}
+          </span>
           <div>
-            <strong>{isArabic ? "تمت الإضافة للسلة" : "Added to cart"}</strong>
-            <small>{cartNotice}</small>
+            <strong>
+              {cartNotice.type === "removed"
+                ? (isArabic ? "تم حذف المنتج من السلة" : "Removed from cart")
+                : (isArabic ? "تمت الإضافة للسلة" : "Added to cart")}
+            </strong>
+            <small>{cartNotice.productName}</small>
           </div>
           <button
             type="button"
-            onClick={() => { setPage("cart"); setCartNotice(null); window.scrollTo(0, 0); }}
+            onClick={() => {
+              navigateToPage("cart");
+              setCartNotice(null);
+              window.scrollTo(0, 0);
+            }}
           >
             {isArabic ? "عرض السلة" : "View Cart"}
           </button>
@@ -2399,6 +2454,7 @@ function CheckoutPage({
   cart,
   cartTotal,
   setPage,
+  navigateToPage,
 }) {
   const [centerName, setCenterName] = useState("");
   const [contactName, setContactName] = useState("");
@@ -2416,7 +2472,7 @@ function CheckoutPage({
     }
 
     const orderLines = cart.map((item, index) => {
-      const extras = [item.size, item.color, item.weight, item.dimensions]
+      const extras = [item.size, item.color, item.weight]
         .filter(Boolean)
         .join(" • ");
       const lineTotal = (item.price * item.quantity).toLocaleString();
@@ -2438,7 +2494,7 @@ function CheckoutPage({
   return (
     <main className="checkout-page">
       <div className="checkout-container">
-        <button className="back-button" onClick={() => setPage("cart")}>
+        <button className="back-button" onClick={() => navigateToPage("cart")}>
           <ArrowLeft />
           {isArabic ? "العودة للسلة" : "Back to Cart"}
         </button>
