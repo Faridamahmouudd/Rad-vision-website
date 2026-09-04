@@ -8,6 +8,8 @@ import {
   ChevronRight,
   Headphones,
   MessageCircle,
+  Moon,
+  Sun,
   Minus,
   PackageCheck,
   Plus,
@@ -126,6 +128,9 @@ const fujiConventionalVariants = [
 
 function App() {
   const [language, setLanguage] = useState("en");
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("rad-vision-theme") === "dark";
+  });
   const [page, setPage] = useState("home");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedPrinter, setSelectedPrinter] = useState(null);
@@ -173,6 +178,10 @@ function App() {
     if (cartNoticeTimer.current) clearTimeout(cartNoticeTimer.current);
     cartNoticeTimer.current = setTimeout(() => setCartNotice(null), 2400);
   };
+
+  useEffect(() => {
+    localStorage.setItem("rad-vision-theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
 
   const isArabic = language === "ar";
 
@@ -733,7 +742,7 @@ function App() {
   };
 
   return (
-    <div className="website" dir={isArabic ? "rtl" : "ltr"}>
+    <div className={`website ${darkMode ? "dark-mode" : ""}`} dir={isArabic ? "rtl" : "ltr"}>
       <Header
         logo={logo}
         isArabic={isArabic}
@@ -958,6 +967,16 @@ function Header({
         </nav>
 
         <div className="header-actions">
+          <button
+            className="theme-toggle-button"
+            type="button"
+            onClick={() => setDarkMode((current) => !current)}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? (isArabic ? "الوضع الفاتح" : "Light Mode") : (isArabic ? "الوضع الداكن" : "Dark Mode")}
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            <span>{darkMode ? (isArabic ? "فاتح" : "Light") : (isArabic ? "داكن" : "Dark")}</span>
+          </button>
           <button
             className="language-button"
             onClick={() =>
