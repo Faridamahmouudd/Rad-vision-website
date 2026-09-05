@@ -1098,7 +1098,7 @@ function HomePage({
                 className="outline-button hero-outline"
                 onClick={() => scrollTo("printers")}
               >
-                {isArabic ? " لطابعات" : "Printers"}
+                {isArabic ? "الطابعات" : "Printers"}
                 <ArrowRight size={18} />
               </button>
             </div>
@@ -1121,7 +1121,7 @@ function HomePage({
 
         <TrustItem
           icon={<Wrench />}
-          title={isArabic ? "حلول Target" : "Target Solutions"}
+          title={isArabic ? "Target Printers" : "Target Solutions"}
           text={isArabic ? "أنظمة حسب استهلاك المركز" : "Plans based on center usage"}
         />
 
