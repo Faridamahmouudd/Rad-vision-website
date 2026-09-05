@@ -2472,23 +2472,49 @@ function CheckoutPage({
           .join(" • ");
         const lineTotal = (item.price * item.quantity).toLocaleString();
 
-        return `${index + 1}. ${item.name}\\n${
-          extras ? `${extras}\\n` : ""
-        }${isArabic ? "الكمية" : "Qty"}: ${item.quantity}\\n${
-          isArabic ? "السعر" : "Total"
-        }: ${lineTotal} EGP`;
+        return isArabic
+          ? `${index + 1}) ${item.name}\n${extras ? `المواصفات: ${extras}\n` : ""}الكمية: ${item.quantity}\nالسعر: ${lineTotal} EGP`
+          : `${index + 1}) ${item.name}\n${extras ? `Specifications: ${extras}\n` : ""}Qty: ${item.quantity}\nTotal: ${lineTotal} EGP`;
       })
-      .join("\\n\\n");
+      .join("\n\n");
 
     const fullPhone = `${countryCode}${phone.replace(/^0+/, "")}`;
 
     const message = isArabic
-      ? `مرحباً RAD VISION، أريد تأكيد الطلب التالي:\\n\\n${orderLines}\\n\\nالإجمالي: ${cartTotal.toLocaleString()} EGP\\n\\nبيانات العميل:\\nاسم المركز / المستشفى: ${centerName}\\nاسم المسؤول: ${contactName}\\nالدولة: ${selectedCountry.nameAr}\\nرقم الهاتف: ${fullPhone}\\nالمحافظة: ${governorate}\\nالمنطقة: ${area}\\nالعنوان: ${address}${
-          notes ? `\\nملاحظات: ${notes}` : ""
-        }`
-      : `Hello RAD VISION, I would like to confirm the following order:\\n\\n${orderLines}\\n\\nTotal: ${cartTotal.toLocaleString()} EGP\\n\\nCustomer Details:\\nCenter / Hospital Name: ${centerName}\\nContact Name: ${contactName}\\nCountry: ${selectedCountry.nameEn}\\nPhone: ${fullPhone}\\nGovernorate: ${governorate}\\nArea: ${area}\\nAddress: ${address}${
-          notes ? `\\nNotes: ${notes}` : ""
-        }`;
+      ? `مرحباً RAD VISION 👋
+
+أريد تأكيد الطلب التالي:
+
+📦 تفاصيل الطلب:
+${orderLines}
+
+💰 إجمالي الطلب: ${cartTotal.toLocaleString()} EGP
+
+👤 بيانات العميل:
+اسم المركز / المستشفى: ${centerName}
+اسم المسؤول: ${contactName}
+الدولة: ${selectedCountry.nameAr}
+رقم الهاتف: ${fullPhone}
+المحافظة: ${governorate}
+المنطقة: ${area}
+العنوان: ${address}${notes ? `\nملاحظات: ${notes}` : ""}`
+      : `Hello RAD VISION 👋
+
+I would like to confirm the following order:
+
+📦 Order Details:
+${orderLines}
+
+💰 Order Total: ${cartTotal.toLocaleString()} EGP
+
+👤 Customer Details:
+Center / Hospital Name: ${centerName}
+Contact Name: ${contactName}
+Country: ${selectedCountry.nameEn}
+Phone: ${fullPhone}
+Governorate: ${governorate}
+Area: ${area}
+Address: ${address}${notes ? `\nNotes: ${notes}` : ""}`;
 
     window.open(
       `https://wa.me/201060004999?text=${encodeURIComponent(message)}`,
@@ -2674,8 +2700,36 @@ function PrinterQuoteSection({ isArabic }) {
     const fullPhone = `${countryCode}${phone.replace(/^0+/, "")}`;
 
     const message = isArabic
-      ? `مرحباً RAD VISION، أريد طلب عرض سعر للطابعة.\\n\\nبيانات المركز / المستشفى:\\nاسم المركز / المستشفى: ${facilityName}\\nالدولة: ${selectedCountry.nameAr}\\nرقم الهاتف: ${fullPhone}\\nالمحافظة: ${governorate}\\nالمنطقة: ${area}\\nالعنوان: ${address}\\n\\nالطابعة المطلوبة: ${printer}\\nالتارجت الشهري المطلوب: ${targetAmount}`
-      : `Hello RAD VISION, I would like to request a printer quotation.\\n\\nCenter / Hospital Details:\\nCenter / Hospital Name: ${facilityName}\\nCountry: ${selectedCountry.nameEn}\\nPhone: ${fullPhone}\\nGovernorate: ${governorate}\\nArea: ${area}\\nAddress: ${address}\\n\\nRequested Printer: ${printer}\\nRequired Monthly Target: ${targetAmount}`;
+      ? `مرحباً RAD VISION 👋
+
+أريد طلب عرض سعر للطابعة.
+
+🏥 بيانات المركز / المستشفى:
+اسم المركز / المستشفى: ${facilityName}
+الدولة: ${selectedCountry.nameAr}
+رقم الهاتف: ${fullPhone}
+المحافظة: ${governorate}
+المنطقة: ${area}
+العنوان: ${address}
+
+🖨️ تفاصيل الطلب:
+الطابعة المطلوبة: ${printer}
+التارجت الشهري المطلوب: ${targetAmount}`
+      : `Hello RAD VISION 👋
+
+I would like to request a printer quotation.
+
+🏥 Center / Hospital Details:
+Center / Hospital Name: ${facilityName}
+Country: ${selectedCountry.nameEn}
+Phone: ${fullPhone}
+Governorate: ${governorate}
+Area: ${area}
+Address: ${address}
+
+🖨️ Request Details:
+Requested Printer: ${printer}
+Required Monthly Target: ${targetAmount}`;
 
     window.open(
       `https://wa.me/201060004999?text=${encodeURIComponent(message)}`,
