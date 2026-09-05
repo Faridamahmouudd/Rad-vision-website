@@ -2781,9 +2781,8 @@ function PrinterQuoteSection({ isArabic }) {
                 inputMode="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder={
-                  isArabic ? "مثال: 1060004999" : "Example: 1060004999"
-                }
+               
+                
                 required
               />
             </div>
