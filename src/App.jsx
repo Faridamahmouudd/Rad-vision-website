@@ -110,9 +110,9 @@ const fujiLaserVariants = [
 ];
 
 const fujiDihtVariants = [
-  { size: "8×10", price: 2200 },
+  { size: "8×10", price: 2350 },
   { size: "10×14", price: 3800 },
-  { size: "14×17", price: 5900 },
+  { size: "14×17", price: 6200 },
 ];
 
 const huqFilmSizes = ["8×10", "11×14", "14×17"];
@@ -479,7 +479,7 @@ function App() {
       name: "ACMA Automatic Developer",
       category: isArabic ? "أحماض ومحاليل" : "X-RAY CHEMICALS",
       gallery: [acmaDeveloper],
-      variants: [{ size: isArabic ? "كرتونة" : "Carton", price: 2200 }],
+      variants: [{ size: isArabic ? "كرتونة" : "Carton", price: 2750 }],
       features: isArabic ? ["مظهر أوتوماتيك", "الكرتونة 2 جركن"] : ["Automatic Developer", "Carton: 2 jerrycans"],
       details: ["Automatic X-Ray Developer", "2 Jerrycans / Carton", "2,200 EGP / Carton", "ACMA"],
     },
@@ -487,7 +487,7 @@ function App() {
       name: "ACMA Automatic Fixer",
       category: isArabic ? "أحماض ومحاليل" : "X-RAY CHEMICALS",
       gallery: [acmaAutomaticFixer],
-      variants: [{ size: isArabic ? "كرتونة" : "Carton", price: 1500 }],
+      variants: [{ size: isArabic ? "كرتونة" : "Carton", price: 1750 }],
       features: isArabic ? ["مثبت أوتوماتيك", "الكرتونة 2 جركن"] : ["Automatic Fixer", "Carton: 2 jerrycans"],
       details: ["Automatic Fixer", "2 Jerrycans / Carton", "1,500 EGP / Carton", "ACMA"],
     },
