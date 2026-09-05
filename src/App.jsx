@@ -16,12 +16,15 @@ import {
   ShoppingCart,
   Trash2,
   Wrench,
+  Phone,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 
 import "./App.css";
 
 import logo from "./assets/rad-vision-logo.png";
-import heroRadiology from "./assets/hero-radiology-xray.jpg";
+import heroRadiology from "./assets/hero-radiology-new.png";
 
 import plasticFilm from "./assets/products/plastic-film.png";
 import glossyPaper from "./assets/products/glossy-paper.png";
@@ -1031,9 +1034,15 @@ function HomePage({
 }) {
   return (
     <main>
-      <section className="hero hero-premium" id="home">
-        <div className="hero-inner">
-          <div className="hero-copy">
+      <section
+        className="hero hero-premium hero-background hero-full-overlay"
+        id="home"
+        style={{ "--hero-image": `url(${heroRadiology})` }}
+      >
+        <div className="hero-overlay"></div>
+
+        <div className="hero-inner hero-full-inner">
+          <div className="hero-copy hero-on-image">
             <div className="hero-label">
               <span className="hero-label-dot"></span>
               {isArabic
@@ -1055,12 +1064,10 @@ function HomePage({
               )}
             </h1>
 
-            <div className="hero-title-accent"></div>
-
             <p>
               {isArabic
-                ? "أفلام أشعة، مستلزمات طباعة طبية، أنظمة برنترات وحلول Target مع دعم فني موثوق — كل ما يحتاجه مركز الأشعة في مكان واحد."
-                : "Medical films, imaging consumables, printer systems and Target solutions with reliable technical support — everything your radiology center needs in one place."}
+                ? "أفلام أشعة ومستلزمات طباعة طبية، أنظمة طباعة متكاملة وحلول تعاقد مرنة، مع صيانة ودعم فني متخصص."
+                : "Medical films and imaging consumables, integrated printer systems and flexible contract solutions, backed by specialized service and technical support."}
             </p>
 
             <div className="hero-points">
@@ -1068,12 +1075,10 @@ function HomePage({
                 <CheckCircle2 size={18} />
                 {isArabic ? "جودة موثوقة" : "Trusted Quality"}
               </span>
-
               <span>
                 <CheckCircle2 size={18} />
                 {isArabic ? "أداء ثابت" : "Reliable Performance"}
               </span>
-
               <span>
                 <CheckCircle2 size={18} />
                 {isArabic ? "دعم فني متخصص" : "Expert Support"}
@@ -1093,50 +1098,9 @@ function HomePage({
                 className="outline-button hero-outline"
                 onClick={() => scrollTo("printers")}
               >
-                {isArabic ? "حلول البرنترات" : "Printer Solutions"}
+                {isArabic ? "حلول الطابعات" : "Printer Solutions"}
                 <ArrowRight size={18} />
               </button>
-            </div>
-
-            <div className="hero-mini-stats">
-              <div>
-                <strong>{isArabic ? "Medical Films" : "Medical Films"}</strong>
-                <small>{isArabic ? "أنواع ومقاسات متعددة" : "Multiple types & sizes"}</small>
-              </div>
-              <div>
-                <strong>{isArabic ? "Target System" : "Target System"}</strong>
-                <small>{isArabic ? "حسب استهلاك المركز" : "Built around your usage"}</small>
-              </div>
-              <div>
-                <strong>{isArabic ? "Support" : "Support"}</strong>
-                <small>{isArabic ? "صيانة وخدمة فنية" : "Service & maintenance"}</small>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-visual hero-medical-visual">
-            <div className="hero-image-frame">
-              <img
-                src={heroRadiology}
-                alt={isArabic ? "أشعة طبية" : "Radiology medical imaging"}
-              />
-              <div className="hero-image-glow"></div>
-            </div>
-
-            <div className="hero-visual-badge hero-visual-badge-top">
-              <ShieldCheck size={20} />
-              <div>
-                <strong>{isArabic ? "Medical Imaging" : "Medical Imaging"}</strong>
-                <span>{isArabic ? "حلول احترافية للمراكز" : "Professional center solutions"}</span>
-              </div>
-            </div>
-
-            <div className="hero-visual-badge hero-visual-badge-bottom">
-              <Headphones size={20} />
-              <div>
-                <strong>{isArabic ? "Technical Support" : "Technical Support"}</strong>
-                <span>{isArabic ? "دعم ما بعد البيع" : "Reliable after-sales support"}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -2501,20 +2465,30 @@ function CheckoutPage({
       return;
     }
 
-    const orderLines = cart.map((item, index) => {
-      const extras = [item.size, item.color, item.weight]
-        .filter(Boolean)
-        .join(" • ");
-      const lineTotal = (item.price * item.quantity).toLocaleString();
+    const orderLines = cart
+      .map((item, index) => {
+        const extras = [item.size, item.color, item.weight]
+          .filter(Boolean)
+          .join(" • ");
+        const lineTotal = (item.price * item.quantity).toLocaleString();
 
-      return `${index + 1}. ${item.name}\n${extras ? `${extras}\n` : ""}${isArabic ? "الكمية" : "Qty"}: ${item.quantity}\n${isArabic ? "السعر" : "Total"}: ${lineTotal} EGP`;
-    }).join("\n\n");
+        return `${index + 1}. ${item.name}\\n${
+          extras ? `${extras}\\n` : ""
+        }${isArabic ? "الكمية" : "Qty"}: ${item.quantity}\\n${
+          isArabic ? "السعر" : "Total"
+        }: ${lineTotal} EGP`;
+      })
+      .join("\\n\\n");
 
     const fullPhone = `${countryCode}${phone.replace(/^0+/, "")}`;
 
     const message = isArabic
-      ? `مرحباً RAD VISION، أريد تأكيد الطلب التالي:\n\n${orderLines}\n\nالإجمالي: ${cartTotal.toLocaleString()} EGP\n\nبيانات العميل:\nاسم المركز / المستشفى: ${centerName}\nاسم المسؤول: ${contactName}\nالدولة: ${selectedCountry.nameAr}\nرقم الهاتف: ${fullPhone}\nالمحافظة: ${governorate}\nالمنطقة: ${area}\nالعنوان: ${address}${notes ? `\nملاحظات: ${notes}` : ""}`
-      : `Hello RAD VISION, I would like to confirm the following order:\n\n${orderLines}\n\nTotal: ${cartTotal.toLocaleString()} EGP\n\nCustomer Details:\nCenter / Hospital Name: ${centerName}\nContact Name: ${contactName}\nCountry: ${selectedCountry.nameEn}\nPhone: ${fullPhone}\nGovernorate: ${governorate}\nArea: ${area}\nAddress: ${address}${notes ? `\nNotes: ${notes}` : ""}`;
+      ? `مرحباً RAD VISION، أريد تأكيد الطلب التالي:\\n\\n${orderLines}\\n\\nالإجمالي: ${cartTotal.toLocaleString()} EGP\\n\\nبيانات العميل:\\nاسم المركز / المستشفى: ${centerName}\\nاسم المسؤول: ${contactName}\\nالدولة: ${selectedCountry.nameAr}\\nرقم الهاتف: ${fullPhone}\\nالمحافظة: ${governorate}\\nالمنطقة: ${area}\\nالعنوان: ${address}${
+          notes ? `\\nملاحظات: ${notes}` : ""
+        }`
+      : `Hello RAD VISION, I would like to confirm the following order:\\n\\n${orderLines}\\n\\nTotal: ${cartTotal.toLocaleString()} EGP\\n\\nCustomer Details:\\nCenter / Hospital Name: ${centerName}\\nContact Name: ${contactName}\\nCountry: ${selectedCountry.nameEn}\\nPhone: ${fullPhone}\\nGovernorate: ${governorate}\\nArea: ${area}\\nAddress: ${address}${
+          notes ? `\\nNotes: ${notes}` : ""
+        }`;
 
     window.open(
       `https://wa.me/201060004999?text=${encodeURIComponent(message)}`,
@@ -2539,26 +2513,49 @@ function CheckoutPage({
             <form className="checkout-form" onSubmit={sendOrderToWhatsApp}>
               <div className="form-row">
                 <div className="form-field">
-                  <label>{isArabic ? "اسم المركز / المستشفى" : "Center / Hospital Name"}</label>
-                  <input value={centerName} onChange={(e) => setCenterName(e.target.value)} required />
+                  <label>
+                    {isArabic
+                      ? "اسم المركز / المستشفى"
+                      : "Center / Hospital Name"}
+                  </label>
+                  <input
+                    value={centerName}
+                    onChange={(e) => setCenterName(e.target.value)}
+                    required
+                  />
                 </div>
+
                 <div className="form-field">
                   <label>{isArabic ? "اسم المسؤول" : "Contact Name"}</label>
-                  <input value={contactName} onChange={(e) => setContactName(e.target.value)} required />
+                  <input
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-field">
-                  <label>{isArabic ? "الدولة / كود الاتصال" : "Country / Dial Code"}</label>
-                  <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} required>
+                  <label>
+                    {isArabic
+                      ? "الدولة / كود الاتصال"
+                      : "Country / Dial Code"}
+                  </label>
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    required
+                  >
                     {phoneCountries.map((country) => (
                       <option key={country.code} value={country.code}>
-                        {isArabic ? country.nameAr : country.nameEn} ({country.code})
+                        {isArabic ? country.nameAr : country.nameEn} (
+                        {country.code})
                       </option>
                     ))}
                   </select>
                 </div>
+
                 <div className="form-field">
                   <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
                   <input
@@ -2566,7 +2563,9 @@ function CheckoutPage({
                     inputMode="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder={isArabic ? "مثال: 1060004999" : "Example: 1060004999"}
+                    placeholder={
+                      isArabic ? "مثال: 1060004999" : "Example: 1060004999"
+                    }
                     required
                   />
                 </div>
@@ -2575,17 +2574,32 @@ function CheckoutPage({
               <div className="form-row">
                 <div className="form-field">
                   <label>{isArabic ? "المحافظة" : "Governorate"}</label>
-                  <input value={governorate} onChange={(e) => setGovernorate(e.target.value)} required />
+                  <input
+                    value={governorate}
+                    onChange={(e) => setGovernorate(e.target.value)}
+                    required
+                  />
                 </div>
+
                 <div className="form-field">
                   <label>{isArabic ? "المنطقة" : "Area"}</label>
-                  <input value={area} onChange={(e) => setArea(e.target.value)} required />
+                  <input
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
               <div className="form-field">
-                <label>{isArabic ? "العنوان بالتفصيل" : "Detailed Address"}</label>
-                <input value={address} onChange={(e) => setAddress(e.target.value)} required />
+                <label>
+                  {isArabic ? "العنوان بالتفصيل" : "Detailed Address"}
+                </label>
+                <input
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
               </div>
 
               <div className="form-field">
@@ -2594,34 +2608,43 @@ function CheckoutPage({
                   rows="4"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder={isArabic ? "أي ملاحظات على الطلب..." : "Any order notes..."}
+                  placeholder={
+                    isArabic ? "أي ملاحظات على الطلب..." : "Any order notes..."
+                  }
                 />
               </div>
 
               <button className="place-order-button" type="submit">
                 <MessageCircle />
-                {isArabic ? "تأكيد الطلب على واتساب" : "Confirm Order on WhatsApp"}
+                {isArabic
+                  ? "تأكيد الطلب على واتساب"
+                  : "Confirm Order on WhatsApp"}
               </button>
             </form>
           </section>
 
           <aside className="checkout-summary">
             <h2>{isArabic ? "طلبك" : "Your Order"}</h2>
+
             {cart.map((item) => (
               <div className="checkout-item" key={item.id}>
                 <img src={item.image} alt={item.name} />
+
                 <div>
                   <strong>{item.name}</strong>
                   <span>
                     {item.size}
                     {item.color ? ` • ${item.color}` : ""}
                     {item.weight ? ` • ${item.weight}` : ""}
-                    {" × "}{item.quantity}
+                    {" × "}
+                    {item.quantity}
                   </span>
                 </div>
+
                 <b>{(item.price * item.quantity).toLocaleString()} EGP</b>
               </div>
             ))}
+
             <div className="checkout-total">
               <span>{isArabic ? "الإجمالي" : "Total"}</span>
               <strong>{cartTotal.toLocaleString()} EGP</strong>
@@ -2653,8 +2676,8 @@ function PrinterQuoteSection({ isArabic }) {
     const fullPhone = `${countryCode}${phone.replace(/^0+/, "")}`;
 
     const message = isArabic
-      ? `مرحباً RAD VISION، أريد طلب عرض سعر للطابعة.\n\nبيانات المركز / المستشفى:\nاسم المركز / المستشفى: ${facilityName}\nالدولة: ${selectedCountry.nameAr}\nرقم الهاتف: ${fullPhone}\nالمحافظة: ${governorate}\nالمنطقة: ${area}\nالعنوان: ${address}\n\nالطابعة المطلوبة: ${printer}\nالتارجت الشهري المطلوب: ${targetAmount}`
-      : `Hello RAD VISION, I would like to request a printer quotation.\n\nCenter / Hospital Details:\nCenter / Hospital Name: ${facilityName}\nCountry: ${selectedCountry.nameEn}\nPhone: ${fullPhone}\nGovernorate: ${governorate}\nArea: ${area}\nAddress: ${address}\n\nRequested Printer: ${printer}\nRequired Monthly Target: ${targetAmount}`;
+      ? `مرحباً RAD VISION، أريد طلب عرض سعر للطابعة.\\n\\nبيانات المركز / المستشفى:\\nاسم المركز / المستشفى: ${facilityName}\\nالدولة: ${selectedCountry.nameAr}\\nرقم الهاتف: ${fullPhone}\\nالمحافظة: ${governorate}\\nالمنطقة: ${area}\\nالعنوان: ${address}\\n\\nالطابعة المطلوبة: ${printer}\\nالتارجت الشهري المطلوب: ${targetAmount}`
+      : `Hello RAD VISION, I would like to request a printer quotation.\\n\\nCenter / Hospital Details:\\nCenter / Hospital Name: ${facilityName}\\nCountry: ${selectedCountry.nameEn}\\nPhone: ${fullPhone}\\nGovernorate: ${governorate}\\nArea: ${area}\\nAddress: ${address}\\n\\nRequested Printer: ${printer}\\nRequired Monthly Target: ${targetAmount}`;
 
     window.open(
       `https://wa.me/201060004999?text=${encodeURIComponent(message)}`,
@@ -2672,9 +2695,7 @@ function PrinterQuoteSection({ isArabic }) {
           </span>
 
           <h2>
-            {isArabic
-              ? "اطلب عرض سعر للطابعة"
-              : "Request a Printer Quote"}
+            {isArabic ? "اطلب عرض سعر للطابعة" : "Request a Printer Quote"}
           </h2>
 
           <p>
@@ -2686,7 +2707,11 @@ function PrinterQuoteSection({ isArabic }) {
 
         <form className="quote-form" onSubmit={sendPrinterQuoteToWhatsApp}>
           <div className="form-field">
-            <label>{isArabic ? "اسم المركز / المستشفى" : "Center / Hospital Name"}</label>
+            <label>
+              {isArabic
+                ? "اسم المركز / المستشفى"
+                : "Center / Hospital Name"}
+            </label>
             <input
               type="text"
               value={facilityName}
@@ -2729,11 +2754,21 @@ function PrinterQuoteSection({ isArabic }) {
 
           <div className="form-row">
             <div className="form-field">
-              <label>{isArabic ? "الدولة / كود الاتصال" : "Country / Dial Code"}</label>
-              <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} required>
+              <label>
+                {isArabic
+                  ? "الدولة / كود الاتصال"
+                  : "Country / Dial Code"}
+              </label>
+
+              <select
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                required
+              >
                 {phoneCountries.map((country) => (
                   <option key={country.code} value={country.code}>
-                    {isArabic ? country.nameAr : country.nameEn} ({country.code})
+                    {isArabic ? country.nameAr : country.nameEn} (
+                    {country.code})
                   </option>
                 ))}
               </select>
@@ -2746,7 +2781,9 @@ function PrinterQuoteSection({ isArabic }) {
                 inputMode="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder={isArabic ? "مثال: 1060004999" : "Example: 1060004999"}
+                placeholder={
+                  isArabic ? "مثال: 1060004999" : "Example: 1060004999"
+                }
                 required
               />
             </div>
@@ -2755,10 +2792,16 @@ function PrinterQuoteSection({ isArabic }) {
           <div className="form-row">
             <div className="form-field">
               <label>{isArabic ? "الطابعة المطلوبة" : "Requested Printer"}</label>
-              <select value={printer} onChange={(e) => setPrinter(e.target.value)} required>
+
+              <select
+                value={printer}
+                onChange={(e) => setPrinter(e.target.value)}
+                required
+              >
                 <option value="" disabled>
                   {isArabic ? "اختر الطابعة" : "Select Printer"}
                 </option>
+
                 <option>Epson 869R</option>
                 <option>HUQ Thermal Printer</option>
                 <option>Xerox C60 / C70</option>
@@ -2767,13 +2810,22 @@ function PrinterQuoteSection({ isArabic }) {
             </div>
 
             <div className="form-field">
-              <label>{isArabic ? "التارجت الشهري المطلوب" : "Required Monthly Target"}</label>
+              <label>
+                {isArabic
+                  ? "التارجت الشهري المطلوب"
+                  : "Required Monthly Target"}
+              </label>
+
               <input
                 type="number"
                 min="1"
                 value={targetAmount}
                 onChange={(e) => setTargetAmount(e.target.value)}
-                placeholder={isArabic ? "اكتب الكمية المطلوبة شهرياً" : "Enter monthly quantity"}
+                placeholder={
+                  isArabic
+                    ? "اكتب الكمية المطلوبة شهرياً"
+                    : "Enter monthly quantity"
+                }
                 required
               />
             </div>
@@ -2793,17 +2845,92 @@ function PrinterQuoteSection({ isArabic }) {
 
 function Footer({ logo, isArabic }) {
   return (
-    <footer className="footer">
-      <div className="footer-inner">
-        <img src={logo} alt="Rad Vision" />
+    <footer className="footer modern-footer">
+      <div className="footer-grid">
+        <div className="footer-brand">
+          <img src={logo} alt="Rad Vision" />
+          <p>
+            {isArabic
+              ? "حلول متكاملة للطباعة والتصوير الطبي لمراكز الأشعة والمستشفيات."
+              : "Complete medical imaging and printing solutions for radiology centers and hospitals."}
+          </p>
 
-        <p>
-          {isArabic
-            ? "حلول متكاملة للطباعة والتصوير الطبي."
-            : "Complete medical imaging and printing solutions."}
-        </p>
+          <div className="footer-social-row">
+            <a
+              href="https://wa.me/201060004999"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle size={18} />
+              01060004999
+            </a>
 
+            <a
+              href="https://www.facebook.com/profile.php?id=61585514651931"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="facebook-letter" aria-hidden="true">
+                f
+              </span>
+              Rad Vision
+              <ExternalLink size={14} />
+            </a>
+          </div>
+        </div>
+
+        <div className="footer-column">
+          <h3>{isArabic ? "روابط سريعة" : "Quick Links"}</h3>
+          <a href="#home">{isArabic ? "الرئيسية" : "Home"}</a>
+          <a href="#products">{isArabic ? "المنتجات" : "Products"}</a>
+          <a href="#printers">{isArabic ? "الطابعات" : "Printers"}</a>
+          <a href="#target">{isArabic ? "نظام التعاقد" : "Target System"}</a>
+          <a href="#about">{isArabic ? "من نحن" : "About Us"}</a>
+        </div>
+
+        <div className="footer-column footer-contact">
+          <h3>{isArabic ? "معلومات التواصل" : "Contact Information"}</h3>
+
+          <a href="tel:+201060004999">
+            <Phone size={18} />
+            01060004999
+          </a>
+
+          <a
+            href="https://wa.me/201060004999"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <MessageCircle size={18} />
+            {isArabic ? "واتساب: 01060004999" : "WhatsApp: 01060004999"}
+          </a>
+
+          <div>
+            <MapPin size={18} />
+            <span>Alexandria, Miami, Galal Hamad St</span>
+          </div>
+
+          <a
+            href="https://www.facebook.com/profile.php?id=61585514651931"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="facebook-letter" aria-hidden="true">
+              f
+            </span>
+            Rad Vision
+            <ExternalLink size={14} />
+          </a>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
         <span>© 2026 RAD VISION. All rights reserved.</span>
+        <span>
+          {isArabic
+            ? "حلول متكاملة للطباعة والتصوير الطبي"
+            : "Medical Imaging & Printing Solutions"}
+        </span>
       </div>
     </footer>
   );

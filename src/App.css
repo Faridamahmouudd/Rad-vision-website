@@ -3047,3 +3047,248 @@ button:disabled { opacity: .55; cursor: not-allowed; }
     font-size: 14px !important;
   }
 }
+
+
+/* =========================================================
+   RAD VISION — FULL-WIDTH HERO ON IMAGE
+   ========================================================= */
+.hero-full-overlay {
+  position: relative;
+  min-height: 650px;
+  background-image: var(--hero-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-full-overlay .hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(238, 248, 255, 0.75) 0%,
+      rgba(241, 249, 255, 0.58) 35%,
+      rgba(234, 246, 255, 0.45) 58%,
+      rgba(7, 45, 91, 0.30) 100%
+    );
+}
+
+.hero-full-inner {
+  position: relative;
+  z-index: 1;
+  width: min(92%, 1500px);
+  min-height: 650px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 0 90px;
+}
+
+.hero-on-image {
+  width: min(900px, 100%);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  text-align: center;
+}
+
+.hero-on-image .hero-label {
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.hero-on-image h1 {
+  margin: 0;
+  font-size: clamp(54px, 5.7vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -2px;
+  color: #0a3769;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.hero-on-image h1 span {
+  display: block;
+  margin-top: 8px;
+  color: #087bd5;
+}
+
+.hero-on-image > p {
+  width: min(820px, 100%);
+  margin: 30px auto 0;
+  color: #163c63;
+  font-size: 18px;
+  line-height: 1.9;
+  font-weight: 600;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85);
+}
+
+.hero-on-image .hero-points {
+  justify-content: center;
+  margin-top: 27px;
+}
+
+.hero-on-image .hero-actions {
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.hero-on-image .hero-outline {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.hero-on-image .hero-primary,
+.hero-on-image .hero-outline {
+  min-width: 190px;
+}
+
+/* Remove old hero card look if any legacy rule is still present */
+.hero-glass-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+.checkout-form select,
+.quote-form select {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #d4e0ec;
+  border-radius: 10px;
+  background: #fff;
+  color: #0a3769;
+  padding: 0 14px;
+  font: inherit;
+  outline: none;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus,
+.checkout-form select:focus,
+.quote-form input:focus,
+.quote-form select:focus {
+  border-color: #1185d8;
+  box-shadow: 0 0 0 3px rgba(17, 133, 216, 0.10);
+}
+
+/* =========================================================
+   FOOTER CONTACT SOCIAL
+   ========================================================= */
+.footer-social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.footer-social-row a,
+.footer-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.facebook-letter {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  background: #1877f2;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+@media (max-width: 980px) {
+  .hero-full-overlay,
+  .hero-full-inner {
+    min-height: 590px;
+  }
+
+  .hero-full-inner {
+    width: calc(100% - 34px);
+    padding: 60px 0 85px;
+  }
+
+  .hero-on-image {
+    width: 100%;
+  }
+
+  .hero-on-image h1 {
+    font-size: clamp(46px, 10vw, 68px);
+  }
+
+  .hero-on-image > p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero-full-overlay {
+    min-height: 620px;
+    background-position: 44% center;
+  }
+
+  .hero-full-overlay .hero-overlay {
+    background: rgba(235, 247, 255, 0.68);
+  }
+
+  .hero-full-inner {
+    min-height: 620px;
+    width: calc(100% - 26px);
+    padding: 52px 0 80px;
+  }
+
+  .hero-on-image h1 {
+    font-size: 45px;
+    line-height: 1.04;
+  }
+
+  .hero-on-image > p {
+    margin-top: 22px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .hero-on-image .hero-points {
+    gap: 10px;
+  }
+
+  .hero-on-image .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .hero-on-image .hero-primary,
+  .hero-on-image .hero-outline {
+    min-width: 0;
+    width: 100%;
+    padding-inline: 10px;
+    font-size: 13px;
+  }
+
+  .footer-social-row {
+    justify-content: center;
+  }
+}
