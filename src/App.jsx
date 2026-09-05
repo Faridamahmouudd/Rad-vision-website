@@ -984,7 +984,7 @@ function Header({
             className="header-quote"
             onClick={() => scrollTo("printers")}
           >
-            {isArabic ? "عرض سعر للبرنترات" : "Printer Quote"}
+            {isArabic ? "طلب عرض سعر للطابعات" : "Printer Quote"}
           </button>
         </div>
       </div>
@@ -1036,7 +1036,7 @@ function HomePage({
 
             <p>
               {isArabic
-                ? "أفلام أشعة، مستلزمات طباعة طبية، أنظمة برنترات وحلول Target مع دعم فني موثوق — كل ما يحتاجه مركز الأشعة في مكان واحد."
+                ? "أفلام أشعة ومستلزمات طباعة طبية، أنظمة طباعة متكاملة وحلول تعاقد مرنة، مع صيانة ودعم فني متخصص."
                 : "Medical films, imaging consumables, printer systems and Target solutions with reliable technical support — everything your radiology center needs in one place."}
             </p>
 
@@ -1070,22 +1070,22 @@ function HomePage({
                 className="outline-button hero-outline"
                 onClick={() => scrollTo("printers")}
               >
-                {isArabic ? "حلول البرنترات" : "Printer Solutions"}
+                {isArabic ? "حلول الطابعات" : "Printer Solutions"}
                 <ArrowRight size={18} />
               </button>
             </div>
 
             <div className="hero-mini-stats">
               <div>
-                <strong>{isArabic ? "Medical Films" : "Medical Films"}</strong>
+                <strong>{isArabic ? "أفلام الأشعة" : "Medical Films"}</strong>
                 <small>{isArabic ? "أنواع ومقاسات متعددة" : "Multiple types & sizes"}</small>
               </div>
               <div>
-                <strong>{isArabic ? "Target System" : "Target System"}</strong>
+                <strong>{isArabic ? "نظام التعاقد" : "Target System"}</strong>
                 <small>{isArabic ? "حسب استهلاك المركز" : "Built around your usage"}</small>
               </div>
               <div>
-                <strong>{isArabic ? "Support" : "Support"}</strong>
+                <strong>{isArabic ? "الدعم الفني" : "Support"}</strong>
                 <small>{isArabic ? "صيانة وخدمة فنية" : "Service & maintenance"}</small>
               </div>
             </div>
@@ -1103,7 +1103,7 @@ function HomePage({
             <div className="hero-visual-badge hero-visual-badge-top">
               <ShieldCheck size={20} />
               <div>
-                <strong>{isArabic ? "Medical Imaging" : "Medical Imaging"}</strong>
+                <strong>{isArabic ? "حلول التصوير الطبي" : "Medical Imaging"}</strong>
                 <span>{isArabic ? "حلول احترافية للمراكز" : "Professional center solutions"}</span>
               </div>
             </div>
@@ -1111,7 +1111,7 @@ function HomePage({
             <div className="hero-visual-badge hero-visual-badge-bottom">
               <Headphones size={20} />
               <div>
-                <strong>{isArabic ? "Technical Support" : "Technical Support"}</strong>
+                <strong>{isArabic ? "دعم فني متخصص" : "Technical Support"}</strong>
                 <span>{isArabic ? "دعم ما بعد البيع" : "Reliable after-sales support"}</span>
               </div>
             </div>
@@ -1134,7 +1134,7 @@ function HomePage({
 
         <TrustItem
           icon={<Wrench />}
-          title={isArabic ? "حلول Target" : "Target Solutions"}
+          title={isArabic ? "نظام التعاقد" : "Target Solutions"}
           text={isArabic ? "أنظمة حسب استهلاك المركز" : "Plans based on center usage"}
         />
 
@@ -1208,18 +1208,18 @@ function HomePage({
       <section className="printers-section" id="printers">
         <div className="section-heading">
           <span className="small-title">
-            {isArabic ? "البرنترات" : "PROFESSIONAL PRINTERS"}
+            {isArabic ? "الطابعات" : "PROFESSIONAL PRINTERS"}
           </span>
 
           <h2>
             {isArabic
-              ? "البرنترات المتاحة"
+              ? "الطابعات المتاحة"
               : "Professional Medical Printers"}
           </h2>
 
           <p>
             {isArabic
-              ? "البرنترات لا يتم شراؤها مباشرة من الموقع. اطلب عرض سعر أو نظام Target مناسب لمركزك."
+              ? "الطابعات متاحة من خلال عروض سعر مخصصة أو نظام تعاقد مناسب لاستهلاك مركزك."
               : "Printers are available through customized quotation and target-system programs."}
           </p>
         </div>
@@ -1264,13 +1264,13 @@ function HomePage({
 
             <h2>
               {isArabic
-                ? "نظام التارجت للبرنترات"
+                ? "نظام التعاقد للطابعات"
                 : "Printer Target System"}
             </h2>
 
             <p>
               {isArabic
-                ? "احصل على البرنتر المناسب حسب استهلاكك من الأفلام أو الورق، مع دعم وصيانة حسب العرض المتفق عليه."
+                ? "احصل على الطابعة المناسبة حسب استهلاكك من الأفلام أو الورق، مع صيانة ودعم فني وفق نظام التعاقد المتفق عليه."
                 : "Get the right printer based on your film or paper consumption with a customized target program."}
             </p>
 
@@ -1285,7 +1285,7 @@ function HomePage({
               <span>
                 <CheckCircle2 />
                 {isArabic
-                  ? "اختيارات برنترات متعددة"
+                  ? "اختيارات طابعات متعددة"
                   : "Multiple printer options"}
               </span>
 
@@ -1301,7 +1301,7 @@ function HomePage({
               className="white-button"
               onClick={() => scrollTo("quote")}
             >
-              {isArabic ? "اطلب عرض التارجت" : "Request Target Offer"}
+              {isArabic ? "اطلب عرض التعاقد" : "Request Target Offer"}
               <ArrowRight size={18} />
             </button>
           </div>
@@ -1330,7 +1330,7 @@ function HomePage({
 
           <p>
             {isArabic
-              ? "نوفر أفلام التصوير الطبي والورق الجلوسي والبرنترات والمستلزمات مع أنظمة شراء مباشرة للمنتجات وعروض مخصصة للبرنترات."
+              ? "نوفر أفلام التصوير الطبي والورق الجلوسي والطابعات والمستلزمات، مع شراء مباشر للمنتجات وعروض مخصصة للطابعات وأنظمة التعاقد."
               : "Rad Vision provides imaging films, glossy paper, printers and consumables with direct online shopping for products and customized printer quotations."}
           </p>
         </div>
