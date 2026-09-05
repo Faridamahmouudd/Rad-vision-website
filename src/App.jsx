@@ -125,7 +125,7 @@ const fujiConventionalVariants = [
 
 
 function App() {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("ar");
   const [page, setPage] = useState("home");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedPrinter, setSelectedPrinter] = useState(null);
