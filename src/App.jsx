@@ -1098,7 +1098,7 @@ function HomePage({
                 className="outline-button hero-outline"
                 onClick={() => scrollTo("printers")}
               >
-                {isArabic ? "حلول الطابعات" : "Printer Solutions"}
+                {isArabic ? " لطابعات" : "Printers"}
                 <ArrowRight size={18} />
               </button>
             </div>
