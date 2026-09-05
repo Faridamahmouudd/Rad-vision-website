@@ -3292,3 +3292,237 @@ button:disabled { opacity: .55; cursor: not-allowed; }
     justify-content: center;
   }
 }
+
+
+/* =========================================================
+   RAD VISION — CLEAN FOOTER (NO QUICK LINKS)
+   ========================================================= */
+.footer-clean {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(0, 166, 255, 0.12), transparent 26%),
+    linear-gradient(135deg, #072f5d 0%, #06366b 46%, #04305c 100%);
+  color: #ffffff;
+  padding: 58px 0 24px;
+}
+
+.footer-clean-grid {
+  width: min(88%, 1460px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+  gap: 90px;
+  align-items: start;
+}
+
+.footer-brand-clean {
+  max-width: 620px;
+}
+
+.footer-brand-clean > img {
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.96;
+  margin-bottom: 22px;
+}
+
+.footer-brand-clean > p {
+  margin: 0;
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 18px;
+  line-height: 1.9;
+  font-weight: 500;
+}
+
+.footer-social-clean {
+  margin-top: 28px;
+  gap: 18px;
+}
+
+.footer-social-clean a {
+  min-width: 220px;
+  padding: 0;
+  color: #ffffff;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-social-clean a:hover {
+  transform: translateY(-2px);
+  color: #19b9ff;
+}
+
+.footer-social-clean a > span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.footer-social-clean small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+}
+
+.footer-social-clean strong {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.facebook-letter,
+.whatsapp-footer-icon,
+.footer-contact-icon {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+}
+
+.facebook-letter {
+  background: #1877f2;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.whatsapp-footer-icon {
+  background: #16c964;
+  color: #ffffff;
+}
+
+.footer-contact-clean {
+  justify-self: end;
+  width: min(100%, 520px);
+}
+
+.footer-contact-clean h3 {
+  margin: 0 0 22px;
+  color: #10baf6;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.footer-contact-clean > a,
+.footer-contact-clean > div {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 17px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.footer-contact-clean > a:hover {
+  color: #19b9ff;
+  transform: translateX(-2px);
+}
+
+.footer-contact-icon {
+  width: 34px;
+  height: 34px;
+  color: #14b8ff;
+  background: rgba(20, 184, 255, 0.08);
+}
+
+.footer-contact-clean .facebook-letter {
+  width: 34px;
+  height: 34px;
+  font-size: 19px;
+}
+
+.footer-bottom-clean {
+  width: min(88%, 1460px);
+  margin: 38px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+}
+
+[dir="rtl"] .footer-contact-clean {
+  text-align: right;
+}
+
+[dir="ltr"] .footer-contact-clean {
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .footer-clean-grid {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .footer-contact-clean {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .footer-bottom-clean {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 620px) {
+  .footer-clean {
+    padding-top: 42px;
+  }
+
+  .footer-clean-grid,
+  .footer-bottom-clean {
+    width: calc(100% - 34px);
+  }
+
+  .footer-brand-clean {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .footer-brand-clean > img {
+    width: 215px;
+  }
+
+  .footer-brand-clean > p {
+    font-size: 15px;
+  }
+
+  .footer-social-clean {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-social-clean a {
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .footer-contact-clean h3 {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .footer-contact-clean > a,
+  .footer-contact-clean > div {
+    font-size: 14px;
+  }
+}

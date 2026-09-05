@@ -2845,55 +2845,58 @@ function PrinterQuoteSection({ isArabic }) {
 
 function Footer({ logo, isArabic }) {
   return (
-    <footer className="footer modern-footer">
-      <div className="footer-grid">
-        <div className="footer-brand">
+    <footer className="footer modern-footer footer-clean">
+      <div className="footer-clean-grid">
+        <div className="footer-brand footer-brand-clean">
           <img src={logo} alt="Rad Vision" />
+
           <p>
             {isArabic
-              ? "حلول متكاملة للطباعة والتصوير الطبي لمراكز الأشعة والمستشفيات."
-              : "Complete medical imaging and printing solutions for radiology centers and hospitals."}
+              ? "حلول متكاملة للطباعة والتصوير الطبي وتجهيز مراكز الأشعة والمستشفيات."
+              : "Complete medical imaging, printing and radiology-center solutions for hospitals and imaging centers."}
           </p>
 
-          <div className="footer-social-row">
-            <a
-              href="https://wa.me/201060004999"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MessageCircle size={18} />
-              01060004999
-            </a>
-
+          <div className="footer-social-row footer-social-clean">
             <a
               href="https://www.facebook.com/profile.php?id=61585514651931"
               target="_blank"
               rel="noreferrer"
+              aria-label="Rad Vision Facebook"
             >
               <span className="facebook-letter" aria-hidden="true">
                 f
               </span>
-              Rad Vision
-              <ExternalLink size={14} />
+              <span>
+                <small>{isArabic ? "تابعنا على فيسبوك" : "Follow us on Facebook"}</small>
+                <strong>Rad Vision</strong>
+              </span>
+            </a>
+
+            <a
+              href="https://wa.me/201060004999"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Rad Vision WhatsApp"
+            >
+              <span className="whatsapp-footer-icon" aria-hidden="true">
+                <MessageCircle size={18} />
+              </span>
+              <span>
+                <small>{isArabic ? "تواصل معنا على واتساب" : "Contact us on WhatsApp"}</small>
+                <strong>01060004999</strong>
+              </span>
             </a>
           </div>
         </div>
 
-        <div className="footer-column">
-          <h3>{isArabic ? "روابط سريعة" : "Quick Links"}</h3>
-          <a href="#home">{isArabic ? "الرئيسية" : "Home"}</a>
-          <a href="#products">{isArabic ? "المنتجات" : "Products"}</a>
-          <a href="#printers">{isArabic ? "الطابعات" : "Printers"}</a>
-          <a href="#target">{isArabic ? "نظام التعاقد" : "Target System"}</a>
-          <a href="#about">{isArabic ? "من نحن" : "About Us"}</a>
-        </div>
-
-        <div className="footer-column footer-contact">
+        <div className="footer-contact footer-contact-clean">
           <h3>{isArabic ? "معلومات التواصل" : "Contact Information"}</h3>
 
           <a href="tel:+201060004999">
-            <Phone size={18} />
-            01060004999
+            <span className="footer-contact-icon">
+              <Phone size={19} />
+            </span>
+            <span>01060004999</span>
           </a>
 
           <a
@@ -2901,12 +2904,16 @@ function Footer({ logo, isArabic }) {
             target="_blank"
             rel="noreferrer"
           >
-            <MessageCircle size={18} />
-            {isArabic ? "واتساب: 01060004999" : "WhatsApp: 01060004999"}
+            <span className="footer-contact-icon">
+              <MessageCircle size={19} />
+            </span>
+            <span>01060004999</span>
           </a>
 
           <div>
-            <MapPin size={18} />
+            <span className="footer-contact-icon">
+              <MapPin size={19} />
+            </span>
             <span>Alexandria, Miami, Galal Hamad St</span>
           </div>
 
@@ -2918,14 +2925,19 @@ function Footer({ logo, isArabic }) {
             <span className="facebook-letter" aria-hidden="true">
               f
             </span>
-            Rad Vision
+            <span>Rad Vision</span>
             <ExternalLink size={14} />
           </a>
         </div>
       </div>
 
-      <div className="footer-bottom">
-        <span>© 2026 RAD VISION. All rights reserved.</span>
+      <div className="footer-bottom footer-bottom-clean">
+        <span>
+          {isArabic
+            ? "© 2026 RAD VISION. جميع الحقوق محفوظة."
+            : "© 2026 RAD VISION. All rights reserved."}
+        </span>
+
         <span>
           {isArabic
             ? "حلول متكاملة للطباعة والتصوير الطبي"
