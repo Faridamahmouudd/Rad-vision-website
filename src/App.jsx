@@ -2563,6 +2563,7 @@ function CheckoutPage({
                     inputMode="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    
                     required
                   />
                 </div>
@@ -2778,7 +2779,6 @@ function PrinterQuoteSection({ isArabic }) {
                 inputMode="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-               
                 
                 required
               />
