@@ -430,7 +430,7 @@ function App() {
         ? "طابعة طبية أبيض وأسود"
         : "Monochrome Medical Imaging Printer",
       availability: isArabic
-        ? ["متاحة للبيع كاش فقط"]
+        ? ["متاحة للبيع"]
         : ["Available for cash purchase only"],
       features: isArabic
         ? [
@@ -876,92 +876,81 @@ function App() {
   return (
     <div className="website" dir={isArabic ? "rtl" : "ltr"}>
       <style>{`
-        .site-search-button {
-          width: 44px;
+        .site-search-inline {
+          position: relative;
+          width: 280px;
+          max-width: 32vw;
+          z-index: 30;
+        }
+        .site-search-bar {
           height: 44px;
-          border: 1px solid #d8e4ef;
-          background: #fff;
-          color: #0a3769;
-          border-radius: 12px;
-          display: inline-grid;
-          place-items: center;
-          cursor: pointer;
-          transition: 0.2s ease;
-        }
-        .site-search-button:hover {
-          border-color: #1687d9;
-          color: #1687d9;
-          transform: translateY(-1px);
-          box-shadow: 0 8px 22px rgba(14, 81, 139, 0.12);
-        }
-        .site-search-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(2, 28, 58, 0.42);
-          backdrop-filter: blur(5px);
-          z-index: 9999;
           display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          padding: 92px 18px 24px;
-        }
-        .site-search-panel {
-          width: min(720px, 100%);
+          align-items: stretch;
+          border: 1.8px solid #2d9fe3;
           background: #fff;
-          border-radius: 20px;
-          box-shadow: 0 24px 70px rgba(3, 37, 75, 0.24);
+          border-radius: 999px;
           overflow: hidden;
-          border: 1px solid #e2ebf3;
+          box-shadow: 0 4px 14px rgba(10, 82, 140, 0.08);
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .site-search-input-wrap {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 16px 18px;
-          border-bottom: 1px solid #e8eff5;
-        }
-        .site-search-input-wrap svg {
-          color: #1185d8;
-          flex: 0 0 auto;
+        .site-search-bar:focus-within {
+          border-color: #0b84d5;
+          box-shadow: 0 0 0 3px rgba(11, 132, 213, 0.10);
         }
         .site-search-input {
           flex: 1;
           min-width: 0;
           border: 0;
           outline: 0;
-          background: transparent;
+          background: #fff;
           color: #0b3159;
           font: inherit;
-          font-size: 18px;
+          font-size: 14px;
           font-weight: 600;
+          padding: 0 16px;
           direction: inherit;
         }
-        .site-search-close {
+        .site-search-input::placeholder {
+          color: #91a5b7;
+          font-weight: 500;
+        }
+        .site-search-submit {
+          width: 54px;
+          min-width: 54px;
           border: 0;
-          background: #f1f6fa;
-          color: #0b3159;
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
+          background: #2d9fe3;
+          color: #fff;
+          display: grid;
+          place-items: center;
           cursor: pointer;
-          font-size: 24px;
-          line-height: 1;
+          transition: background 0.2s ease;
+        }
+        .site-search-submit:hover {
+          background: #087fc9;
         }
         .site-search-results {
-          max-height: min(520px, 66vh);
+          position: absolute;
+          top: calc(100% + 8px);
+          inset-inline: 0;
+          max-height: 430px;
           overflow-y: auto;
-          padding: 10px;
+          padding: 8px;
+          background: #fff;
+          border: 1px solid #e2ebf3;
+          border-radius: 14px;
+          box-shadow: 0 18px 42px rgba(3, 37, 75, 0.18);
+          z-index: 1000;
         }
         .site-search-result {
           width: 100%;
           border: 0;
           background: transparent;
           display: grid;
-          grid-template-columns: 58px 1fr auto;
+          grid-template-columns: 46px 1fr auto;
           align-items: center;
-          gap: 12px;
-          padding: 11px 12px;
-          border-radius: 13px;
+          gap: 10px;
+          padding: 9px 10px;
+          border-radius: 10px;
           text-align: start;
           cursor: pointer;
           color: #0b3159;
@@ -972,34 +961,35 @@ function App() {
           outline: none;
         }
         .site-search-result img {
-          width: 58px;
-          height: 58px;
+          width: 46px;
+          height: 46px;
           object-fit: contain;
           background: #f6f9fc;
-          border-radius: 10px;
+          border-radius: 8px;
         }
         .site-search-result strong {
           display: block;
-          font-size: 15px;
-          margin-bottom: 4px;
+          font-size: 13px;
+          margin-bottom: 3px;
         }
         .site-search-result small {
           color: #6b8297;
-          font-size: 12px;
+          font-size: 11px;
         }
         .site-search-result-type {
           background: #eaf6ff;
           color: #087bc8;
           border-radius: 999px;
-          padding: 6px 9px;
-          font-size: 11px;
+          padding: 5px 8px;
+          font-size: 10px;
           font-weight: 800;
           white-space: nowrap;
         }
         .site-search-empty {
-          padding: 32px 20px;
+          padding: 16px 12px;
           text-align: center;
           color: #6b8297;
+          font-size: 13px;
         }
         .printer-card-price {
           margin: 10px 0 4px;
@@ -1034,12 +1024,29 @@ function App() {
           margin-top: 16px;
         }
         @media (max-width: 720px) {
-          .site-search-overlay { padding-top: 72px; }
-          .site-search-input { font-size: 16px; }
-          .site-search-result {
-            grid-template-columns: 50px 1fr;
+          .site-search-inline {
+            width: 100%;
+            max-width: none;
+            order: 10;
           }
-          .site-search-result img { width: 50px; height: 50px; }
+          .site-search-bar {
+            height: 42px;
+          }
+          .site-search-input {
+            font-size: 14px;
+          }
+          .site-search-submit {
+            width: 50px;
+            min-width: 50px;
+          }
+          .site-search-results {
+            position: absolute;
+            max-height: 360px;
+          }
+          .site-search-result {
+            grid-template-columns: 44px 1fr;
+          }
+          .site-search-result img { width: 44px; height: 44px; }
           .site-search-result-type { display: none; }
           .cash-printer-actions { grid-template-columns: 1fr; }
         }
@@ -1248,8 +1255,9 @@ function Header({
   openProduct,
   openPrinter,
 }) {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchBoxRef = useRef(null);
 
   const searchResults = useMemo(() => {
     const query = normalizeSearchText(searchQuery);
@@ -1287,13 +1295,33 @@ function Header({
   }, [searchQuery, products, printers]);
 
   const openSearchResult = (item) => {
-    setSearchOpen(false);
+    setSearchFocused(false);
     setSearchQuery("");
 
     if (item.resultType === "printer") {
       openPrinter(item);
     } else {
       openProduct(item);
+    }
+  };
+
+  useEffect(() => {
+    const handleOutsideSearch = (event) => {
+      if (
+        searchBoxRef.current &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
+        setSearchFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideSearch);
+    return () => document.removeEventListener("mousedown", handleOutsideSearch);
+  }, []);
+
+  const submitSearch = () => {
+    if (searchResults[0]) {
+      openSearchResult(searchResults[0]);
     }
   };
 
@@ -1328,15 +1356,78 @@ function Header({
           </nav>
 
           <div className="header-actions">
-            <button
-              type="button"
-              className="site-search-button"
-              onClick={() => setSearchOpen(true)}
-              aria-label={isArabic ? "بحث" : "Search"}
-              title={isArabic ? "بحث" : "Search"}
+            <div
+              className="site-search-inline"
+              ref={searchBoxRef}
+              onFocus={() => setSearchFocused(true)}
             >
-              <Search size={20} />
-            </button>
+              <div className="site-search-bar">
+                <input
+                  className="site-search-input"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      setSearchFocused(false);
+                    }
+                    if (event.key === "Enter") {
+                      submitSearch();
+                    }
+                  }}
+                  placeholder={isArabic ? "ابحث..." : "Search..."}
+                  aria-label={isArabic ? "بحث في الموقع" : "Search website"}
+                />
+
+                <button
+                  type="button"
+                  className="site-search-submit"
+                  onClick={submitSearch}
+                  aria-label={isArabic ? "بحث" : "Search"}
+                >
+                  <Search size={23} strokeWidth={2.2} />
+                </button>
+              </div>
+
+              {searchFocused && searchQuery.trim() && (
+                <div className="site-search-results">
+                  {searchResults.length ? (
+                    searchResults.map((item) => (
+                      <button
+                        type="button"
+                        className="site-search-result"
+                        key={`${item.resultType}-${item.id}`}
+                        onClick={() => openSearchResult(item)}
+                      >
+                        <img src={item.image} alt="" />
+                        <span>
+                          <strong>{item.name}</strong>
+                          <small>
+                            {item.resultType === "printer"
+                              ? item.type
+                              : item.category}
+                          </small>
+                        </span>
+                        <span className="site-search-result-type">
+                          {item.resultType === "printer"
+                            ? isArabic
+                              ? "طابعة"
+                              : "Printer"
+                            : isArabic
+                            ? "منتج"
+                            : "Product"}
+                        </span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="site-search-empty">
+                      {isArabic
+                        ? "لا توجد نتائج مطابقة."
+                        : "No matching results."}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             <button
               className="language-button"
@@ -1369,92 +1460,7 @@ function Header({
         </div>
       </header>
 
-      {searchOpen && (
-        <div
-          className="site-search-overlay"
-          onMouseDown={() => setSearchOpen(false)}
-        >
-          <div
-            className="site-search-panel"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="site-search-input-wrap">
-              <Search size={22} />
-              <input
-                autoFocus
-                className="site-search-input"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Escape") {
-                    setSearchOpen(false);
-                  }
-                  if (event.key === "Enter" && searchResults[0]) {
-                    openSearchResult(searchResults[0]);
-                  }
-                }}
-                placeholder={
-                  isArabic
-                    ? "ابحث عن منتج أو طابعة..."
-                    : "Search products or printers..."
-                }
-              />
-              <button
-                type="button"
-                className="site-search-close"
-                onClick={() => setSearchOpen(false)}
-                aria-label={isArabic ? "إغلاق" : "Close"}
-              >
-                ×
-              </button>
-            </div>
 
-            <div className="site-search-results">
-              {!searchQuery.trim() ? (
-                <div className="site-search-empty">
-                  {isArabic
-                    ? "اكتب اسم المنتج أو الموديل بالعربي أو بالإنجليزي."
-                    : "Type a product name or model in Arabic or English."}
-                </div>
-              ) : searchResults.length ? (
-                searchResults.map((item) => (
-                  <button
-                    type="button"
-                    className="site-search-result"
-                    key={`${item.resultType}-${item.id}`}
-                    onClick={() => openSearchResult(item)}
-                  >
-                    <img src={item.image} alt="" />
-                    <span>
-                      <strong>{item.name}</strong>
-                      <small>
-                        {item.resultType === "printer"
-                          ? item.type
-                          : item.description}
-                      </small>
-                    </span>
-                    <span className="site-search-result-type">
-                      {item.resultType === "printer"
-                        ? isArabic
-                          ? "طابعة"
-                          : "Printer"
-                        : isArabic
-                          ? "منتج"
-                          : "Product"}
-                    </span>
-                  </button>
-                ))
-              ) : (
-                <div className="site-search-empty">
-                  {isArabic
-                    ? "لا توجد نتائج مطابقة. جرّب اسمًا أو موديلًا آخر."
-                    : "No matching results. Try another name or model."}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
