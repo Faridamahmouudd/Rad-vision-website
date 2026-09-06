@@ -19,6 +19,7 @@ import {
   Phone,
   MapPin,
   ExternalLink,
+  Search,
 } from "lucide-react";
 
 import "./App.css";
@@ -83,6 +84,8 @@ import xerox78Detail3 from "./assets/products/xerox-78-detail-3.jpg";
 import xerox78Detail4 from "./assets/products/xerox-78-detail-4.jpg";
 import xerox78Detail5 from "./assets/products/xerox-78-detail-5.jpg";
 import xerox78Detail6 from "./assets/products/xerox-78-detail-6.jpg";
+import epsonM5299 from "./assets/products/epson-wf-m5299.png";
+import epsonM5299Detail from "./assets/products/epson-wf-m5299-detail.png";
 
 const plasticFilmVariants = [
   { size: "A3", dimensions: "29.7 × 42 cm", price: 900 },
@@ -149,6 +152,60 @@ const phoneCountries = [
   { nameAr: "الولايات المتحدة", nameEn: "United States", code: "+1" },
   { nameAr: "المملكة المتحدة", nameEn: "United Kingdom", code: "+44" },
 ];
+
+
+const normalizeSearchText = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .replace(/[×x*]/g, "x")
+    .replace(/[^a-z0-9\u0600-\u06FF+]+/g, " ")
+    .trim();
+
+const searchAliases = {
+  "plastic-film":
+    "افلام بلاستيك للاشعة فيلم بلاستيك اشعة افلام طبية inkjet plastic medical imaging film blue white film a3 a4 8x10 11x14 b4",
+  "glossy-paper":
+    "ورق جلوسي ورق glossy photo paper nour a3 a4 180 gsm 200 gsm 230 gsm",
+  "fuji-laser":
+    "فوجي ليزر افلام اشعة fuji laser film di hl medical imaging",
+  "fuji-diht":
+    "فوجي ثيرمال افلام اشعة fuji thermal dry imaging di ht",
+  "huq-film":
+    "افلام huq ثيرمال thermal film dry imaging",
+  "sony-upp":
+    "سوني رول سونار sony upp 110s ultrasound thermal paper",
+  skydent:
+    "سكاي دنت افلام اسنان skydent dental xray film",
+  acma:
+    "اكما مظهر اوتوماتيك احماض developer automatic chemicals",
+  "acma-auto-fixer":
+    "اكما مثبت اوتوماتيك fixer automatic chemicals",
+  "acma-manual-fixer":
+    "اكما مثبت مانيوال manual fixer chemicals",
+  "acma-manual-developer":
+    "اكما مظهر مانيوال manual developer chemicals",
+  "fuji-green":
+    "فوجي جرين افلام اشعة fuji green xray film",
+  "fuji-blue":
+    "فوجي بلو افلام اشعة fuji blue xray film",
+  "epson-869r":
+    "ابسون epson 869r برنتر طابعة افلام بلاستيك glossy paper target تقسيط",
+  "epson-wf-m5299":
+    "ابسون epson wf m5299 wf-m5299 m5299 برنتر طابعة ابيض واسود black white monochrome افلام بلاستيك plastic film ورق جلوسي glossy paper a4 8x10 كاش cash",
+  "huq-thermal":
+    "huq thermal printer برنتر طابعة ثيرمال افلام اشعة target تقسيط",
+  "xerox-c60-c70":
+    "زيروكس xerox c60 c70 برنتر طابعة glossy paper color black target",
+  "xerox-78":
+    "زيروكس xerox 7835 7845 7855 برنتر طابعة glossy paper color black target",
+};
 
 function App() {
   const [language, setLanguage] = useState("ar");
@@ -363,6 +420,41 @@ function App() {
       quoteOptions: isArabic
         ? ["شراء مباشر", "نظام Target", "تقسيط"]
         : ["Direct Purchase", "Target System", "Installments"],
+    },
+    {
+      id: "epson-wf-m5299",
+      image: epsonM5299,
+      gallery: [epsonM5299, epsonM5299Detail],
+      name: "Epson WF-M5299",
+      type: isArabic
+        ? "طابعة طبية أبيض وأسود"
+        : "Monochrome Medical Imaging Printer",
+      availability: isArabic
+        ? ["متاحة للبيع كاش فقط"]
+        : ["Available for cash purchase only"],
+      features: isArabic
+        ? [
+            "طباعة أبيض وأسود فقط",
+            "تطبع أفلام البلاستيك الطبية بجودة عالية جدًا",
+            "تطبع على ورق Glossy بجودة عالية جدًا",
+            "تطبع مقاس 8×10 و A4",
+            "أقصى مقاس للطباعة A4",
+          ]
+        : [
+            "Black & white printing only",
+            "High-quality printing on plastic medical imaging film",
+            "High-quality printing on glossy paper",
+            "Supports 8×10 and A4",
+            "Maximum print size: A4",
+          ],
+      sizes: ["8×10", "A4"],
+      media: isArabic
+        ? "أفلام بلاستيك طبية • ورق Glossy"
+        : "Plastic Medical Imaging Film • Glossy Paper",
+      systems: isArabic ? "شراء كاش فقط" : "Cash Purchase Only",
+      quoteOptions: [],
+      cashOnly: true,
+      price: 7000,
     },
     {
       id: "huq-thermal",
@@ -740,6 +832,28 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const addCashPrinterToCart = (printer) => {
+    const newItem = {
+      id: `${printer.id}-${Date.now()}`,
+      productId: printer.id,
+      name: printer.name,
+      image: printer.image,
+      size: printer.sizes?.join(" / ") || "",
+      dimensions: "",
+      price: printer.price,
+      quantity: 1,
+    };
+
+    mergeItemIntoCart(newItem);
+    showCartNotice(newItem.name);
+  };
+
+  const buyCashPrinterNow = (printer) => {
+    addCashPrinterToCart(printer);
+    navigateToPage("cart");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const changeCartQuantity = (id, amount) => {
     setCart((current) =>
       current.map((item) =>
@@ -761,6 +875,175 @@ function App() {
 
   return (
     <div className="website" dir={isArabic ? "rtl" : "ltr"}>
+      <style>{`
+        .site-search-button {
+          width: 44px;
+          height: 44px;
+          border: 1px solid #d8e4ef;
+          background: #fff;
+          color: #0a3769;
+          border-radius: 12px;
+          display: inline-grid;
+          place-items: center;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+        .site-search-button:hover {
+          border-color: #1687d9;
+          color: #1687d9;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 22px rgba(14, 81, 139, 0.12);
+        }
+        .site-search-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(2, 28, 58, 0.42);
+          backdrop-filter: blur(5px);
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          padding: 92px 18px 24px;
+        }
+        .site-search-panel {
+          width: min(720px, 100%);
+          background: #fff;
+          border-radius: 20px;
+          box-shadow: 0 24px 70px rgba(3, 37, 75, 0.24);
+          overflow: hidden;
+          border: 1px solid #e2ebf3;
+        }
+        .site-search-input-wrap {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 18px;
+          border-bottom: 1px solid #e8eff5;
+        }
+        .site-search-input-wrap svg {
+          color: #1185d8;
+          flex: 0 0 auto;
+        }
+        .site-search-input {
+          flex: 1;
+          min-width: 0;
+          border: 0;
+          outline: 0;
+          background: transparent;
+          color: #0b3159;
+          font: inherit;
+          font-size: 18px;
+          font-weight: 600;
+          direction: inherit;
+        }
+        .site-search-close {
+          border: 0;
+          background: #f1f6fa;
+          color: #0b3159;
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 24px;
+          line-height: 1;
+        }
+        .site-search-results {
+          max-height: min(520px, 66vh);
+          overflow-y: auto;
+          padding: 10px;
+        }
+        .site-search-result {
+          width: 100%;
+          border: 0;
+          background: transparent;
+          display: grid;
+          grid-template-columns: 58px 1fr auto;
+          align-items: center;
+          gap: 12px;
+          padding: 11px 12px;
+          border-radius: 13px;
+          text-align: start;
+          cursor: pointer;
+          color: #0b3159;
+        }
+        .site-search-result:hover,
+        .site-search-result:focus-visible {
+          background: #f0f8ff;
+          outline: none;
+        }
+        .site-search-result img {
+          width: 58px;
+          height: 58px;
+          object-fit: contain;
+          background: #f6f9fc;
+          border-radius: 10px;
+        }
+        .site-search-result strong {
+          display: block;
+          font-size: 15px;
+          margin-bottom: 4px;
+        }
+        .site-search-result small {
+          color: #6b8297;
+          font-size: 12px;
+        }
+        .site-search-result-type {
+          background: #eaf6ff;
+          color: #087bc8;
+          border-radius: 999px;
+          padding: 6px 9px;
+          font-size: 11px;
+          font-weight: 800;
+          white-space: nowrap;
+        }
+        .site-search-empty {
+          padding: 32px 20px;
+          text-align: center;
+          color: #6b8297;
+        }
+        .printer-card-price {
+          margin: 10px 0 4px;
+          font-weight: 800;
+          color: #087bc8;
+          font-size: 18px;
+        }
+        .cash-printer-price-box {
+          margin-top: 18px;
+          padding: 18px;
+          border: 1px solid #d7e9f7;
+          background: #f3faff;
+          border-radius: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 18px;
+        }
+        .cash-printer-price-box span {
+          color: #6b8297;
+          font-size: 14px;
+          font-weight: 700;
+        }
+        .cash-printer-price-box strong {
+          color: #087bc8;
+          font-size: 26px;
+        }
+        .cash-printer-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-top: 16px;
+        }
+        @media (max-width: 720px) {
+          .site-search-overlay { padding-top: 72px; }
+          .site-search-input { font-size: 16px; }
+          .site-search-result {
+            grid-template-columns: 50px 1fr;
+          }
+          .site-search-result img { width: 50px; height: 50px; }
+          .site-search-result-type { display: none; }
+          .cash-printer-actions { grid-template-columns: 1fr; }
+        }
+      `}</style>
       <Header
         logo={logo}
         isArabic={isArabic}
@@ -770,6 +1053,10 @@ function App() {
         scrollTo={scrollTo}
         setPage={setPage}
         cartCount={cartCount}
+        products={products}
+        printers={printers}
+        openProduct={openProduct}
+        openPrinter={openPrinter}
       />
 
       {page === "home" && (
@@ -877,6 +1164,8 @@ function App() {
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
           goHome={goHome}
+          addCashPrinterToCart={addCashPrinterToCart}
+          buyCashPrinterNow={buyCashPrinterNow}
         />
       )}
 
@@ -954,67 +1243,219 @@ function Header({
   scrollTo,
   setPage,
   cartCount,
+  products,
+  printers,
+  openProduct,
+  openPrinter,
 }) {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchResults = useMemo(() => {
+    const query = normalizeSearchText(searchQuery);
+    if (!query) return [];
+
+    const productItems = products.map((item) => ({
+      ...item,
+      resultType: "product",
+      searchText: [
+        item.name,
+        item.category,
+        item.description,
+        searchAliases[item.id] || "",
+      ].join(" "),
+    }));
+
+    const printerItems = printers.map((item) => ({
+      ...item,
+      resultType: "printer",
+      searchText: [
+        item.name,
+        item.type,
+        item.media,
+        item.systems,
+        ...(item.features || []),
+        searchAliases[item.id] || "",
+      ].join(" "),
+    }));
+
+    return [...productItems, ...printerItems]
+      .filter((item) =>
+        normalizeSearchText(item.searchText).includes(query)
+      )
+      .slice(0, 10);
+  }, [searchQuery, products, printers]);
+
+  const openSearchResult = (item) => {
+    setSearchOpen(false);
+    setSearchQuery("");
+
+    if (item.resultType === "printer") {
+      openPrinter(item);
+    } else {
+      openProduct(item);
+    }
+  };
+
   return (
-    <header className="header">
-      <div className="header-inner">
-        <button className="logo-button" onClick={goHome} aria-label="Home">
-          <img src={logo} className="logo" alt="Rad Vision" />
-        </button>
-
-        <nav className="nav">
-          <button onClick={goHome}>
-            {isArabic ? "الرئيسية" : "Home"}
+    <>
+      <header className="header">
+        <div className="header-inner">
+          <button className="logo-button" onClick={goHome} aria-label="Home">
+            <img src={logo} className="logo" alt="Rad Vision" />
           </button>
 
-          <button onClick={() => scrollTo("products")}>
-            {isArabic ? "المنتجات" : "Products"}
-          </button>
+          <nav className="nav">
+            <button onClick={goHome}>
+              {isArabic ? "الرئيسية" : "Home"}
+            </button>
 
-          <button onClick={() => scrollTo("printers")}>
-            {isArabic ? "الطابعات" : "Printers"}
-          </button>
+            <button onClick={() => scrollTo("products")}>
+              {isArabic ? "المنتجات" : "Products"}
+            </button>
 
-          <button onClick={() => scrollTo("target")}>
-            {isArabic ? "نظام التارجت" : "Target System"}
-          </button>
+            <button onClick={() => scrollTo("printers")}>
+              {isArabic ? "الطابعات" : "Printers"}
+            </button>
 
-          <button onClick={() => scrollTo("about")}>
-            {isArabic ? "من نحن" : "About Us"}
-          </button>
-        </nav>
+            <button onClick={() => scrollTo("target")}>
+              {isArabic ? "نظام التارجت" : "Target System"}
+            </button>
 
-        <div className="header-actions">
-          <button
-            className="language-button"
-            onClick={() =>
-              setLanguage(language === "ar" ? "en" : "ar")
-            }
-          >
-            {isArabic ? "EN" : "العربية"}
-          </button>
+            <button onClick={() => scrollTo("about")}>
+              {isArabic ? "من نحن" : "About Us"}
+            </button>
+          </nav>
 
-          <button
-            className="cart-header-button"
-            onClick={() => {
-              setPage("cart");
-              window.scrollTo(0, 0);
-            }}
-          >
-            <ShoppingBag size={19} />
-            <span>{isArabic ? "السلة" : "Cart"}</span>
-            {cartCount > 0 && <b>{cartCount}</b>}
-          </button>
+          <div className="header-actions">
+            <button
+              type="button"
+              className="site-search-button"
+              onClick={() => setSearchOpen(true)}
+              aria-label={isArabic ? "بحث" : "Search"}
+              title={isArabic ? "بحث" : "Search"}
+            >
+              <Search size={20} />
+            </button>
 
-          <button
-            className="header-quote"
-            onClick={() => scrollTo("printers")}
-          >
-            {isArabic ? "عرض سعر للبرنترات" : "Printer Quote"}
-          </button>
+            <button
+              className="language-button"
+              onClick={() =>
+                setLanguage(language === "ar" ? "en" : "ar")
+              }
+            >
+              {isArabic ? "EN" : "العربية"}
+            </button>
+
+            <button
+              className="cart-header-button"
+              onClick={() => {
+                setPage("cart");
+                window.scrollTo(0, 0);
+              }}
+            >
+              <ShoppingBag size={19} />
+              <span>{isArabic ? "السلة" : "Cart"}</span>
+              {cartCount > 0 && <b>{cartCount}</b>}
+            </button>
+
+            <button
+              className="header-quote"
+              onClick={() => scrollTo("printers")}
+            >
+              {isArabic ? "عرض سعر للبرنترات" : "Printer Quote"}
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {searchOpen && (
+        <div
+          className="site-search-overlay"
+          onMouseDown={() => setSearchOpen(false)}
+        >
+          <div
+            className="site-search-panel"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="site-search-input-wrap">
+              <Search size={22} />
+              <input
+                autoFocus
+                className="site-search-input"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setSearchOpen(false);
+                  }
+                  if (event.key === "Enter" && searchResults[0]) {
+                    openSearchResult(searchResults[0]);
+                  }
+                }}
+                placeholder={
+                  isArabic
+                    ? "ابحث عن منتج أو طابعة..."
+                    : "Search products or printers..."
+                }
+              />
+              <button
+                type="button"
+                className="site-search-close"
+                onClick={() => setSearchOpen(false)}
+                aria-label={isArabic ? "إغلاق" : "Close"}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="site-search-results">
+              {!searchQuery.trim() ? (
+                <div className="site-search-empty">
+                  {isArabic
+                    ? "اكتب اسم المنتج أو الموديل بالعربي أو بالإنجليزي."
+                    : "Type a product name or model in Arabic or English."}
+                </div>
+              ) : searchResults.length ? (
+                searchResults.map((item) => (
+                  <button
+                    type="button"
+                    className="site-search-result"
+                    key={`${item.resultType}-${item.id}`}
+                    onClick={() => openSearchResult(item)}
+                  >
+                    <img src={item.image} alt="" />
+                    <span>
+                      <strong>{item.name}</strong>
+                      <small>
+                        {item.resultType === "printer"
+                          ? item.type
+                          : item.description}
+                      </small>
+                    </span>
+                    <span className="site-search-result-type">
+                      {item.resultType === "printer"
+                        ? isArabic
+                          ? "طابعة"
+                          : "Printer"
+                        : isArabic
+                          ? "منتج"
+                          : "Product"}
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <div className="site-search-empty">
+                  {isArabic
+                    ? "لا توجد نتائج مطابقة. جرّب اسمًا أو موديلًا آخر."
+                    : "No matching results. Try another name or model."}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -1206,8 +1647,8 @@ function HomePage({
 
           <p>
             {isArabic
-              ? "البرنترات لا يتم شراؤها مباشرة من الموقع. اطلب عرض سعر أو نظام Target مناسب لمركزك."
-              : "Printers are available through customized quotation and target-system programs."}
+              ? "تتوفر بعض الطابعات للشراء المباشر كاش، بينما تتوفر موديلات أخرى بعروض سعر أو نظام Target حسب احتياجات مركزك."
+              : "Some printers are available for direct cash purchase, while other models are offered through quotations or Target System programs."}
           </p>
         </div>
 
@@ -1227,13 +1668,25 @@ function HomePage({
                 <span>{printer.type}</span>
                 <h3>{printer.name}</h3>
 
+                {printer.cashOnly && (
+                  <div className="printer-card-price">
+                    {printer.price.toLocaleString()} EGP
+                  </div>
+                )}
+
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
                     openPrinter(printer);
                   }}
                 >
-                  {isArabic ? "عرض التفاصيل وطلب سعر" : "View Details & Request Quote"}
+                  {printer.cashOnly
+                    ? isArabic
+                      ? "عرض التفاصيل والشراء"
+                      : "View Details & Buy"
+                    : isArabic
+                      ? "عرض التفاصيل وطلب سعر"
+                      : "View Details & Request Quote"}
                   <ArrowRight size={17} />
                 </button>
               </div>
@@ -1862,6 +2315,8 @@ function PrinterDetailPage({
   selectedImage,
   setSelectedImage,
   goHome,
+  addCashPrinterToCart,
+  buyCashPrinterNow,
 }) {
   const [selectedProgram, setSelectedProgram] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
@@ -1996,141 +2451,177 @@ Requested option: ${selectedProgram}`
               </div>
             </div>
 
-            <div className="selector-section">
-              <strong className="selector-label">
-                {isArabic
-                  ? "اختر طريقة الحصول على البرنتر"
-                  : "Choose how you would like to get the printer"}
-              </strong>
+            {printer.cashOnly ? (
+              <>
+                <div className="cash-printer-price-box">
+                  <span>{isArabic ? "السعر كاش" : "Cash Price"}</span>
+                  <strong>{printer.price.toLocaleString()} EGP</strong>
+                </div>
 
-              <div className="size-grid" style={{ marginTop: "12px" }}>
-                {printer.quoteOptions.map((option) => (
+                <div className="cash-printer-actions">
                   <button
-                    key={option}
                     type="button"
-                    className={
-                      selectedProgram === option
-                        ? "size-option active"
-                        : "size-option"
-                    }
-                    onClick={() => {
-                      setSelectedProgram(option);
-                      if (option !== "نظام Target" && option !== "Target System") {
-                        setTargetAmount("");
-                      }
-                    }}
+                    className="add-cart-button"
+                    onClick={() => addCashPrinterToCart(printer)}
                   >
-                    <strong>{option}</strong>
-                    <span>
-                      {isArabic ? "اختر هذا النظام" : "Select this option"}
-                    </span>
+                    <ShoppingCart size={19} />
+                    {isArabic ? "إضافة للسلة" : "Add to Cart"}
                   </button>
-                ))}
-              </div>
-            </div>
 
-            {isTargetSelected && (
-              <div className="selector-section">
-                <strong className="selector-label">
-                  {isArabic ? "بيانات طلب نظام التارجت" : "Target System Request Details"}
-                </strong>
+                  <button
+                    type="button"
+                    className="buy-now-button"
+                    onClick={() => buyCashPrinterNow(printer)}
+                  >
+                    {isArabic ? "شراء الآن" : "Buy Now"}
+                  </button>
+                </div>
 
-                <form
-                  className="checkout-form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    requestQuote();
+                <div className="product-note">
+                  {isArabic
+                    ? "هذه الطابعة متاحة للبيع كاش فقط بالسعر الموضح، ولا تتوفر بنظام التارجت أو التقسيط."
+                    : "This printer is available for cash purchase only at the displayed price. Target System and installment plans are not available."}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="selector-section">
+                  <strong className="selector-label">
+                    {isArabic
+                      ? "اختر طريقة الحصول على البرنتر"
+                      : "Choose how you would like to get the printer"}
+                  </strong>
+
+                  <div className="size-grid" style={{ marginTop: "12px" }}>
+                    {printer.quoteOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        className={
+                          selectedProgram === option
+                            ? "size-option active"
+                            : "size-option"
+                        }
+                        onClick={() => {
+                          setSelectedProgram(option);
+                          if (option !== "نظام Target" && option !== "Target System") {
+                            setTargetAmount("");
+                          }
+                        }}
+                      >
+                        <strong>{option}</strong>
+                        <span>
+                          {isArabic ? "اختر هذا النظام" : "Select this option"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {isTargetSelected && (
+                  <div className="selector-section">
+                    <strong className="selector-label">
+                      {isArabic ? "بيانات طلب نظام التارجت" : "Target System Request Details"}
+                    </strong>
+
+                    <form
+                      className="checkout-form"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        requestQuote();
+                      }}
+                      style={{ marginTop: "16px" }}
+                    >
+                      <div className="form-field">
+                        <label>
+                          {isArabic ? "التارجت الشهري المطلوب" : "Requested Monthly Target"}
+                        </label>
+                        <input
+                          type="text"
+                          value={targetAmount}
+                          onChange={(event) => setTargetAmount(event.target.value)}
+                          placeholder={
+                            isArabic
+                              ? "مثال: 2000 ورقة شهريًا أو 500 فيلم شهريًا"
+                              : "Example: 2,000 sheets/month or 500 films/month"
+                          }
+                          required
+                        />
+                      </div>
+
+                      <div className="form-field">
+                        <label>{isArabic ? "اسم المركز" : "Center Name"}</label>
+                        <input
+                          type="text"
+                          value={centerName}
+                          onChange={(event) => setCenterName(event.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div className="form-field">
+                        <label>{isArabic ? "رقم التليفون" : "Phone Number"}</label>
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(event) => setPhone(event.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-field">
+                          <label>{isArabic ? "المحافظة" : "Governorate"}</label>
+                          <input
+                            type="text"
+                            value={governorate}
+                            onChange={(event) => setGovernorate(event.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <div className="form-field">
+                          <label>{isArabic ? "العنوان" : "Address"}</label>
+                          <input
+                            type="text"
+                            value={address}
+                            onChange={(event) => setAddress(event.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                <button
+                  className="buy-now-button"
+                  onClick={requestQuote}
+                  style={{
+                    width: "100%",
+                    marginTop: "22px",
+                    opacity: selectedProgram ? 1 : 0.65,
                   }}
-                  style={{ marginTop: "16px" }}
                 >
-                  <div className="form-field">
-                    <label>
-                      {isArabic ? "التارجت الشهري المطلوب" : "Requested Monthly Target"}
-                    </label>
-                    <input
-                      type="text"
-                      value={targetAmount}
-                      onChange={(event) => setTargetAmount(event.target.value)}
-                      placeholder={
-                        isArabic
-                          ? "مثال: 2000 ورقة شهريًا أو 500 فيلم شهريًا"
-                          : "Example: 2,000 sheets/month or 500 films/month"
-                      }
-                      required
-                    />
-                  </div>
+                  <MessageCircle size={20} />
+                  {isArabic ? "إرسال طلب عرض السعر على واتساب" : "Send Quote Request on WhatsApp"}
+                </button>
 
-                  <div className="form-field">
-                    <label>{isArabic ? "اسم المركز" : "Center Name"}</label>
-                    <input
-                      type="text"
-                      value={centerName}
-                      onChange={(event) => setCenterName(event.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-field">
-                    <label>{isArabic ? "رقم التليفون" : "Phone Number"}</label>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(event) => setPhone(event.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-field">
-                      <label>{isArabic ? "المحافظة" : "Governorate"}</label>
-                      <input
-                        type="text"
-                        value={governorate}
-                        onChange={(event) => setGovernorate(event.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-field">
-                      <label>{isArabic ? "العنوان" : "Address"}</label>
-                      <input
-                        type="text"
-                        value={address}
-                        onChange={(event) => setAddress(event.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
+                <div className="product-note">
+                  {isArabic
+                    ? isTargetSelected
+                      ? "بعد إدخال التارجت وبيانات المركز سيتم إرسال كل التفاصيل مع اسم البرنتر مباشرة على واتساب."
+                      : selectedProgram
+                        ? `سيتم إرسال طلب عرض السعر على واتساب بالنظام المختار: ${selectedProgram}.`
+                        : "اختر أولاً النظام المناسب حسب الخيارات المتاحة لهذا البرنتر."
+                    : isTargetSelected
+                      ? "Your printer, monthly target and center details will be included in the WhatsApp request."
+                      : selectedProgram
+                        ? `Your WhatsApp quotation request will include: ${selectedProgram}.`
+                        : "Choose one of the available options first."}
+                </div>
+              </>
             )}
-
-            <button
-              className="buy-now-button"
-              onClick={requestQuote}
-              style={{
-                width: "100%",
-                marginTop: "22px",
-                opacity: selectedProgram ? 1 : 0.65,
-              }}
-            >
-              <MessageCircle size={20} />
-              {isArabic ? "إرسال طلب عرض السعر على واتساب" : "Send Quote Request on WhatsApp"}
-            </button>
-
-            <div className="product-note">
-              {isArabic
-                ? isTargetSelected
-                  ? "بعد إدخال التارجت وبيانات المركز سيتم إرسال كل التفاصيل مع اسم البرنتر مباشرة على واتساب."
-                  : selectedProgram
-                    ? `سيتم إرسال طلب عرض السعر على واتساب بالنظام المختار: ${selectedProgram}.`
-                    : "اختر أولاً النظام المناسب حسب الخيارات المتاحة لهذا البرنتر."
-                : isTargetSelected
-                  ? "Your printer, monthly target and center details will be included in the WhatsApp request."
-                  : selectedProgram
-                    ? `Your WhatsApp quotation request will include: ${selectedProgram}.`
-                    : "Choose one of the available options first."}
-            </div>
           </section>
         </div>
 
