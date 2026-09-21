@@ -98,8 +98,8 @@ const plasticFilmVariants = [
 ];
 
 const glossyPaperVariants = [
-  { size: "A3", weight: "180 GSM", price: 340 },
-  { size: "A3", weight: "200 GSM", price: 350 },
+  { size: "A3", weight: "180 GSM", price: 350 },
+  { size: "A3", weight: "200 GSM", price: 360 },
   { size: "A3", weight: "230 GSM", price: 380 },
   { size: "A4", weight: "180 GSM", price: 160 },
   { size: "A4", weight: "200 GSM", price: 170 },
@@ -283,7 +283,7 @@ function App() {
       description: isArabic
         ? "متوفر A3 وA4 بأوزان متعددة."
         : "Available in A3 & A4 with multiple paper weights.",
-      priceFrom: 150,
+      priceFrom: 160,
     },
     {
       id: "fuji-laser",
