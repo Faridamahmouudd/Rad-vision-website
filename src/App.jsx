@@ -454,7 +454,8 @@ function App() {
       systems: isArabic ? "شراء كاش فقط" : "Cash Purchase Only",
       quoteOptions: [],
       cashOnly: true,
-      price: 7000,
+      price: 7500
+      ,
     },
     {
       id: "huq-thermal",
