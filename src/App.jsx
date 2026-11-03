@@ -87,6 +87,39 @@ import xerox78Detail6 from "./assets/products/xerox-78-detail-6.jpg";
 import epsonM5299 from "./assets/products/epson-wf-m5299.png";
 import epsonM5299Detail from "./assets/products/epson-wf-m5299-detail.png";
 
+// غيّري true إلى false لأي منتج أو طابعة عايزة تظهريها غير متوفرة.
+// true = متوفر | false = غير متوفر حاليًا
+const PRODUCT_AVAILABILITY = {
+  "plastic-film": true,
+  "glossy-paper": true,
+  "fuji-laser": true,
+  "fuji-diht": true,
+  "huq-film": true,
+  "sony-upp": true,
+  "skydent": true,
+  "acma": false,
+  "acma-auto-fixer": true,
+  "acma-manual-fixer": true,
+  "acma-manual-developer": true,
+  "fuji-green": false,
+  "fuji-blue": false,
+  "epson-869r": true,
+  "epson-wf-m5299": true,
+  "huq-thermal": true,
+  "xerox-c60-c70": true,
+  "xerox-78": true,
+};
+
+const isItemAvailable = (id) => PRODUCT_AVAILABILITY[id] !== false;
+
+function StockNotice({ isArabic }) {
+  return (
+    <div className="stock-unavailable-notice" role="status">
+      {isArabic ? "غير متوفر حاليًا" : "Currently Out of Stock"}
+    </div>
+  );
+}
+
 const plasticFilmVariants = [
   { size: "A3", dimensions: "29.7 × 42 cm", price: 900 },
   { size: "A4", dimensions: "21 × 29.7 cm", price: 450 },
@@ -230,6 +263,10 @@ function App() {
   const cartNoticeTimer = useRef(null);
 
   const mergeItemIntoCart = (newItem) => {
+    if (!isItemAvailable(newItem.productId)) {
+      alert(isArabic ? "هذا المنتج غير متوفر حاليًا." : "This item is currently out of stock.");
+      return false;
+    }
     setCart((current) => {
       const sameIndex = current.findIndex((item) =>
         item.productId === newItem.productId &&
@@ -263,6 +300,7 @@ function App() {
   const products = [
     {
       id: "plastic-film",
+      inStock: isItemAvailable("plastic-film"),
       image: plasticFilm,
       category: isArabic ? "أفلام طبية" : "Medical Films",
       name: isArabic
@@ -275,6 +313,7 @@ function App() {
     },
     {
       id: "glossy-paper",
+      inStock: isItemAvailable("glossy-paper"),
       image: glossyPaper,
       category: isArabic ? "ورق جلوسي" : "Glossy Paper",
       name: isArabic
@@ -287,6 +326,7 @@ function App() {
     },
     {
       id: "fuji-laser",
+      inStock: isItemAvailable("fuji-laser"),
       image: fujiLaser,
       category: isArabic ? "أفلام فوجي" : "Fuji Films",
       name: "FUJIFILM DI-HL",
@@ -297,6 +337,7 @@ function App() {
     },
     {
       id: "fuji-diht",
+      inStock: isItemAvailable("fuji-diht"),
       image: fujiDiht,
       category: isArabic ? "أفلام فوجي" : "Fuji Films",
       name: "FUJIFILM DI-HT",
@@ -307,6 +348,7 @@ function App() {
     },
     {
       id: "huq-film",
+      inStock: isItemAvailable("huq-film"),
       image: huqFilm,
       category: isArabic ? "أفلام ثيرمال" : "Thermal Films",
       name: "HUQ Thermal Film",
@@ -317,6 +359,7 @@ function App() {
     },
     {
       id: "sony-upp",
+      inStock: isItemAvailable("sony-upp"),
       image: sonyUpp,
       category: isArabic ? "مستلزمات السونار" : "Ultrasound Media",
       name: "Sony UPP-110S",
@@ -327,6 +370,7 @@ function App() {
     },
     {
       id: "skydent",
+      inStock: isItemAvailable("skydent"),
       image: skydent,
       category: isArabic ? "أفلام أسنان" : "Dental Imaging",
       name: "SKYDENT Dental Film",
@@ -337,6 +381,7 @@ function App() {
     },
     {
       id: "acma",
+      inStock: isItemAvailable("acma"),
       image: acmaDeveloper,
       category: isArabic ? "أحماض ومحاليل" : "Chemicals",
       name: "ACMA Automatic Developer",
@@ -347,6 +392,7 @@ function App() {
     },
     {
       id: "acma-auto-fixer",
+      inStock: isItemAvailable("acma-auto-fixer"),
       image: acmaAutomaticFixer,
       category: isArabic ? "أحماض ومحاليل" : "Chemicals",
       name: "ACMA Automatic Fixer",
@@ -355,6 +401,7 @@ function App() {
     },
     {
       id: "acma-manual-fixer",
+      inStock: isItemAvailable("acma-manual-fixer"),
       image: acmaManualFixer,
       category: isArabic ? "أحماض ومحاليل" : "Chemicals",
       name: "ACMA Manual Fixer",
@@ -363,6 +410,7 @@ function App() {
     },
     {
       id: "acma-manual-developer",
+      inStock: isItemAvailable("acma-manual-developer"),
       image: acmaManualDeveloper,
       category: isArabic ? "أحماض ومحاليل" : "Chemicals",
       name: "ACMA Manual Developer",
@@ -371,6 +419,7 @@ function App() {
     },
     {
       id: "fuji-green",
+      inStock: isItemAvailable("fuji-green"),
       image: fujiGreenFilm,
       category: isArabic ? "أفلام أشعة" : "X-Ray Films",
       name: "FUJIFILM Green X-Ray Film",
@@ -379,6 +428,7 @@ function App() {
     },
     {
       id: "fuji-blue",
+      inStock: isItemAvailable("fuji-blue"),
       image: fujiBlueFilm,
       category: isArabic ? "أفلام أشعة" : "X-Ray Films",
       name: "FUJIFILM Blue X-Ray Film",
@@ -390,6 +440,7 @@ function App() {
   const printers = [
     {
       id: "epson-869r",
+      inStock: isItemAvailable("epson-869r"),
       image: epson869,
       gallery: [epson869, epson869Detail1, epson869Detail2],
       name: "Epson 869R",
@@ -423,6 +474,7 @@ function App() {
     },
     {
       id: "epson-wf-m5299",
+      inStock: isItemAvailable("epson-wf-m5299"),
       image: epsonM5299,
       gallery: [epsonM5299, epsonM5299Detail],
       name: "Epson WF-M5299",
@@ -459,6 +511,7 @@ function App() {
     },
     {
       id: "huq-thermal",
+      inStock: isItemAvailable("huq-thermal"),
       image: huqPrinter,
       gallery: [huqPrinter, huqPrinterDetail1, huqPrinterDetail2, huqPrinterDetail3, huqPrinterDetail4],
       name: "HUQ Thermal Printer",
@@ -494,6 +547,7 @@ function App() {
     },
     {
       id: "xerox-c60-c70",
+      inStock: isItemAvailable("xerox-c60-c70"),
       image: xeroxC60,
       gallery: [xeroxC60],
       name: "Xerox C60 / C70",
@@ -519,6 +573,7 @@ function App() {
     },
     {
       id: "xerox-78",
+      inStock: isItemAvailable("xerox-78"),
       image: xerox78,
       gallery: [xerox78, xerox78Detail1, xerox78Detail2, xerox78Detail3, xerox78Detail4, xerox78Detail5, xerox78Detail6],
       name: "Xerox 7835 / 7845 / 7855",
@@ -780,6 +835,7 @@ function App() {
   };
 
   const buyPlasticNow = () => {
+    if (!isItemAvailable("plastic-film")) return;
     addPlasticToCart();
     navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -808,6 +864,7 @@ function App() {
   };
 
   const buyGlossyNow = () => {
+    if (!isItemAvailable("glossy-paper")) return;
     addGlossyToCart();
     navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -828,6 +885,7 @@ function App() {
   };
 
   const buySimpleProductNow = (item) => {
+    if (!isItemAvailable(item.productId)) return;
     addSimpleProductToCart(item);
     navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -850,6 +908,7 @@ function App() {
   };
 
   const buyCashPrinterNow = (printer) => {
+    if (!isItemAvailable(printer.id)) return;
     addCashPrinterToCart(printer);
     navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1602,17 +1661,19 @@ function HomePage({
         <div className="products-grid">
           {products.map((product) => (
             <article
-              className="product-card"
+              className={`product-card ${!product.inStock ? "is-out-of-stock" : ""}`}
               key={product.id}
               onClick={() => openProduct(product)}
             >
               <div className="product-picture">
                 <span className="category-badge">{product.category}</span>
+                {!product.inStock && <span className="stock-unavailable-badge">{isArabic ? "غير متوفر حاليًا" : "Out of Stock"}</span>}
                 <img src={product.image} alt={product.name} />
               </div>
 
               <div className="product-details">
                 <h3>{product.name}</h3>
+                {!product.inStock && <StockNotice isArabic={isArabic} />}
                 <p>{product.description}</p>
 
                 {product.priceFrom !== undefined && (
@@ -1662,18 +1723,20 @@ function HomePage({
         <div className="printers-grid">
           {printers.map((printer) => (
             <article
-              className="printer-card"
+              className={`printer-card ${!printer.inStock ? "is-out-of-stock" : ""}`}
               key={printer.id}
               onClick={() => openPrinter(printer)}
               style={{ cursor: "pointer" }}
             >
               <div className="printer-image">
+                {!printer.inStock && <span className="stock-unavailable-badge">{isArabic ? "غير متوفر حاليًا" : "Out of Stock"}</span>}
                 <img src={printer.image} alt={printer.name} />
               </div>
 
               <div className="printer-content">
                 <span>{printer.type}</span>
                 <h3>{printer.name}</h3>
+                {!printer.inStock && <StockNotice isArabic={isArabic} />}
 
                 {printer.cashOnly && (
                   <div className="printer-card-price">
@@ -1957,6 +2020,7 @@ function PlasticFilmPage({
             </div>
 
             <PurchaseArea
+              inStock={isItemAvailable("plastic-film")}
               isArabic={isArabic}
               quantity={quantity}
               setQuantity={setQuantity}
@@ -2137,6 +2201,7 @@ function GlossyPaperPage({
             </div>
 
             <PurchaseArea
+              inStock={isItemAvailable("glossy-paper")}
               isArabic={isArabic}
               quantity={quantity}
               setQuantity={setQuantity}
@@ -2236,7 +2301,7 @@ function CatalogProductPage({
               </div>
             )}
 
-            <PurchaseArea isArabic={isArabic} quantity={quantity} setQuantity={setQuantity}
+            <PurchaseArea inStock={isItemAvailable(productId)} isArabic={isArabic} quantity={quantity} setQuantity={setQuantity}
               total={variant.price * quantity}
               addToCart={() => addSimpleProductToCart(cartItem)}
               buyNow={() => buySimpleProductNow(cartItem)} />
@@ -2279,7 +2344,7 @@ function SimpleProductPage({ isArabic, productId, gallery, selectedImage, setSel
         {!isSony && <div className="selector-section"><strong className="selector-label">{isArabic ? "اختر المقاس" : "Choose Size"}</strong><div className="size-grid" style={{marginTop:"12px"}}>
           {variants.map(v=><button key={v.size} className={size===v.size?"size-option active":"size-option"} onClick={()=>setSize(v.size)}><strong>{v.size}</strong><span>{v.price.toLocaleString()} EGP</span></button>)}
         </div></div>}
-        <PurchaseArea isArabic={isArabic} quantity={quantity} setQuantity={setQuantity} total={selectedVariant.price*quantity}
+        <PurchaseArea inStock={isItemAvailable(productId)} isArabic={isArabic} quantity={quantity} setQuantity={setQuantity} total={selectedVariant.price*quantity}
           addToCart={()=>addSimpleProductToCart(cartItem)} buyNow={()=>buySimpleProductNow(cartItem)}/>
       </section>
     </div>
@@ -2294,7 +2359,7 @@ function SimpleProductPage({ isArabic, productId, gallery, selectedImage, setSel
 
 function HuqFilmPage({ isArabic, gallery, selectedImage, setSelectedImage, size, setSize, goHome }) {
   const [showForm,setShowForm]=useState(false), [centerName,setCenterName]=useState(""), [contactName,setContactName]=useState(""), [phone,setPhone]=useState("");
-  const sendRequest=e=>{e.preventDefault(); const m=isArabic?`طلب سعر HUQ Thermal Film\nالمقاس: ${size}\nاسم المركز: ${centerName}\nالاسم: ${contactName}\nرقم الهاتف: ${phone}`:`HUQ Thermal Film price request\nSize: ${size}\nCenter: ${centerName}\nName: ${contactName}\nPhone: ${phone}`; window.open(`https://wa.me/201060004999?text=${encodeURIComponent(m)}`,"_blank");};
+  const sendRequest=e=>{e.preventDefault(); if (!isItemAvailable("huq-film")) return; const m=isArabic?`طلب سعر HUQ Thermal Film\nالمقاس: ${size}\nاسم المركز: ${centerName}\nالاسم: ${contactName}\nرقم الهاتف: ${phone}`:`HUQ Thermal Film price request\nSize: ${size}\nCenter: ${centerName}\nName: ${contactName}\nPhone: ${phone}`; window.open(`https://wa.me/201060004999?text=${encodeURIComponent(m)}`,"_blank");};
   return <main className="product-page"><div className="product-page-container">
     <button className="back-button" onClick={goHome}><ArrowLeft size={18}/>{isArabic?"العودة للمنتجات":"Back to Products"}</button>
     <div className="product-detail-grid"><ProductGallery gallery={gallery} selectedImage={selectedImage} setSelectedImage={setSelectedImage} alt="HUQ Thermal Film"/>
@@ -2302,7 +2367,8 @@ function HuqFilmPage({ isArabic, gallery, selectedImage, setSelectedImage, size,
     <p className="product-detail-description">{isArabic?"السعر غير معروض على الموقع ويتم إرساله بعد تسجيل بيانات المركز.":"Pricing is provided after submitting your center details."}</p>
     <ProductFeature text={isArabic?"100 فيلم في العلبة":"100 films per box"}/><ProductFeature text={isArabic?"الكرتونة 5 علب أفلام":"Carton: 5 film boxes"}/>
     <div className="selector-section"><strong className="selector-label">{isArabic?"اختر المقاس":"Choose Size"}</strong><div className="size-grid" style={{marginTop:"12px"}}>{huqFilmSizes.map(x=><button key={x} className={size===x?"size-option active":"size-option"} onClick={()=>setSize(x)}><strong>{x}</strong><span>{isArabic?"اطلب السعر":"Get Price"}</span></button>)}</div></div>
-    {!showForm?<button className="buy-now-button" onClick={()=>setShowForm(true)}><MessageCircle size={19}/>{isArabic?"اطلب السعر":"Get Price"}</button>:
+    {!isItemAvailable("huq-film") && <StockNotice isArabic={isArabic} />}
+    {!showForm?<button className="buy-now-button" disabled={!isItemAvailable("huq-film")} onClick={()=>setShowForm(true)}><MessageCircle size={19}/>{isArabic?"اطلب السعر":"Get Price"}</button>:
     <form className="checkout-form" onSubmit={sendRequest} style={{marginTop:"22px"}}>
       <div className="form-field"><label>{isArabic?"اسم المركز":"Center Name"}</label><input value={centerName} onChange={e=>setCenterName(e.target.value)} required/></div>
       <div className="form-field"><label>{isArabic?"الاسم":"Contact Name"}</label><input value={contactName} onChange={e=>setContactName(e.target.value)} required/></div>
@@ -2336,6 +2402,7 @@ function PrinterDetailPage({
     selectedProgram === "نظام Target" || selectedProgram === "Target System";
 
   const requestQuote = () => {
+    if (!isItemAvailable(printer.id)) return;
     if (!selectedProgram) {
       alert(
         isArabic
@@ -2410,6 +2477,7 @@ Requested option: ${selectedProgram}`
             </span>
 
             <h1>{printer.name}</h1>
+            {!printer.inStock && <StockNotice isArabic={isArabic} />}
 
             <p className="product-detail-description">
               {printer.type}
@@ -2427,7 +2495,7 @@ Requested option: ${selectedProgram}`
                 marginTop: "14px",
                 marginBottom: "6px"
               }}>
-                {printer.availability.map((item) => (
+                {printer.inStock && printer.availability.map((item) => (
                   <span
                     key={item}
                     style={{
@@ -2469,6 +2537,7 @@ Requested option: ${selectedProgram}`
                   <button
                     type="button"
                     className="add-cart-button"
+                    disabled={!printer.inStock}
                     onClick={() => addCashPrinterToCart(printer)}
                   >
                     <ShoppingCart size={19} />
@@ -2478,6 +2547,7 @@ Requested option: ${selectedProgram}`
                   <button
                     type="button"
                     className="buy-now-button"
+                    disabled={!printer.inStock}
                     onClick={() => buyCashPrinterNow(printer)}
                   >
                     {isArabic ? "شراء الآن" : "Buy Now"}
@@ -2603,6 +2673,7 @@ Requested option: ${selectedProgram}`
 
                 <button
                   className="buy-now-button"
+                  disabled={!printer.inStock}
                   onClick={requestQuote}
                   style={{
                     width: "100%",
@@ -2734,9 +2805,11 @@ function PurchaseArea({
   total,
   addToCart,
   buyNow,
+  inStock = true,
 }) {
   return (
     <>
+      {!inStock && <StockNotice isArabic={isArabic} />}
       <div className="purchase-row">
         <div className="quantity-picker">
           <button
@@ -2761,12 +2834,12 @@ function PurchaseArea({
       </div>
 
       <div className="product-action-buttons">
-        <button className="add-cart-button" onClick={addToCart}>
+        <button className="add-cart-button" onClick={addToCart} disabled={!inStock}>
           <ShoppingCart size={19} />
           {isArabic ? "إضافة للسلة" : "Add to Cart"}
         </button>
 
-        <button className="buy-now-button" onClick={buyNow}>
+        <button className="buy-now-button" onClick={buyNow} disabled={!inStock}>
           {isArabic ? "شراء الآن" : "Buy Now"}
         </button>
       </div>
@@ -2957,6 +3030,10 @@ function CheckoutPage({
 
   const sendOrderToWhatsApp = (e) => {
     e.preventDefault();
+    if (cart.some((item) => !isItemAvailable(item.productId))) {
+      alert(isArabic ? "يوجد منتج غير متوفر في السلة. احذفه قبل تأكيد الطلب." : "Your cart contains an unavailable item. Please remove it before checkout.");
+      return;
+    }
 
     if (!cart.length) {
       alert(isArabic ? "السلة فارغة." : "Your cart is empty.");
