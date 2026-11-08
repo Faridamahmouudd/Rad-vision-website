@@ -102,8 +102,8 @@ const PRODUCT_AVAILABILITY = {
   "acma-auto-fixer": true,
   "acma-manual-fixer": true,
   "acma-manual-developer": true,
-  "fuji-green": false,
-  "fuji-blue": false,
+  "fuji-green": true,
+  "fuji-blue": true,
   "epson-869r": true,
   "epson-wf-m5299": true,
   "huq-thermal": true,
@@ -122,12 +122,12 @@ function StockNotice({ isArabic }) {
 }
 
 const plasticFilmVariants = [
-  { size: "A3", dimensions: "29.7 × 42 cm", price: 900 },
-  { size: "A4", dimensions: "21 × 29.7 cm", price: 450 },
-  { size: "8×10", dimensions: "20.3 × 25.4 cm", price: 400 },
+  { size: "A3", dimensions: "29.7 × 42 cm", price: 1000 },
+  { size: "A4", dimensions: "21 × 29.7 cm", price: 500 },
+  { size: "8×10", dimensions: "20.3 × 25.4 cm", price: 450 },
   { size: "11×14", dimensions: "27.9 × 35.6 cm", price: 800 },
-  { size: "A3+", dimensions: "33 × 45 cm", price: 1250 },
-  { size: "B4", dimensions: "25.7 × 36.4 cm", price: 675 },
+  { size: "A3+", dimensions: "33 × 45 cm", price: 1050 },
+  { size: "B4", dimensions: "25.7 × 36.4 cm", price: 700 },
   { size: "10×12", dimensions: "25.4 × 30.5 cm", price: 650 },
 ];
 
