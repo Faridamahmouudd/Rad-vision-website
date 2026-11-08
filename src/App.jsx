@@ -90,7 +90,8 @@ import epsonM5299Detail from "./assets/products/epson-wf-m5299-detail.png";
 // غيّري true إلى false لأي منتج أو طابعة عايزة تظهريها غير متوفرة.
 // true = متوفر | false = غير متوفر حاليًا
 const PRODUCT_AVAILABILITY = {
-  "plastic-film": true,
+  "plastic-film-blue": true,
+  "plastic-film-white": true,
   "glossy-paper": true,
   "fuji-laser": true,
   "fuji-diht": true,
@@ -202,8 +203,10 @@ const normalizeSearchText = (value = "") =>
     .trim();
 
 const searchAliases = {
-  "plastic-film":
-    "افلام بلاستيك للاشعة فيلم بلاستيك اشعة افلام طبية inkjet plastic medical imaging film blue white film a3 a4 8x10 11x14 b4",
+  "plastic-film-blue":
+    "افلام بلاستيك ازرق للاشعة فيلم ازرق اشعة افلام طبية inkjet plastic medical imaging film blue film a3 a4 8x10 11x14 b4",
+  "plastic-film-white":
+    "افلام بلاستيك ابيض للاشعة فيلم ابيض اشعة افلام طبية inkjet plastic medical imaging film white film a3 a4 8x10 11x14 b4",
   "glossy-paper":
     "ورق جلوسي ورق glossy photo paper nour a3 a4 180 gsm 200 gsm 230 gsm",
   "fuji-laser":
@@ -299,16 +302,25 @@ function App() {
 
   const products = [
     {
-      id: "plastic-film",
-      inStock: isItemAvailable("plastic-film"),
-      image: plasticFilm,
+      id: "plastic-film-blue",
+      inStock: isItemAvailable("plastic-film-blue"),
+      image: plasticBlueOpen,
       category: isArabic ? "أفلام طبية" : "Medical Films",
-      name: isArabic
-        ? "أفلام بلاستيك للأشعة"
-        : "Plastic Medical Imaging Film",
+      name: isArabic ? "أفلام بلاستيك أزرق للأشعة" : "Blue Plastic Medical Imaging Film",
       description: isArabic
-        ? "أفلام طباعة طبية عالية الجودة لمراكز الأشعة."
-        : "High-quality medical imaging films for radiology centers.",
+        ? "أفلام طباعة طبية بالقاعدة الزرقاء، 100 ورقة في العبوة."
+        : "Blue-base medical inkjet film, 100 sheets per box.",
+      priceFrom: 400,
+    },
+    {
+      id: "plastic-film-white",
+      inStock: isItemAvailable("plastic-film-white"),
+      image: plasticWhiteOpen,
+      category: isArabic ? "أفلام طبية" : "Medical Films",
+      name: isArabic ? "أفلام بلاستيك أبيض للأشعة" : "White Plastic Medical Imaging Film",
+      description: isArabic
+        ? "أفلام طباعة طبية بالقاعدة البيضاء، 100 ورقة في العبوة."
+        : "White-base medical inkjet film, 100 sheets per box.",
       priceFrom: 400,
     },
     {
@@ -599,14 +611,9 @@ function App() {
     },
   ];
 
-  const plasticGallery = [
-    plasticSizes,
-    plasticBlueOpen,
-    plasticWhiteOpen,
-    plasticBlueSheets,
-    plasticBlueWhiteReal,
-    plasticBlueCloseup,
-  ];
+  const plasticGallery = plasticColor === "Blue"
+    ? [plasticBlueOpen, plasticBlueSheets, plasticBlueCloseup, plasticSizes, plasticBlueWhiteReal]
+    : [plasticWhiteOpen, plasticSizes, plasticBlueWhiteReal];
 
   const glossyGallery = [glossyA3, glossyA4, glossySheet];
   const fujiLaserGallery = [fujiLaser, fujiLaserDetail];
@@ -768,11 +775,11 @@ function App() {
   };
 
   const openProduct = (product) => {
-    if (product.id === "plastic-film") {
+    if (["plastic-film-blue", "plastic-film-white"].includes(product.id)) {
       setSelectedProduct(product);
       setSelectedImage(0);
       setPlasticSize("A3");
-      setPlasticColor("Blue");
+      setPlasticColor(product.id === "plastic-film-blue" ? "Blue" : "White");
       setQuantity(1);
       navigateToPage("product", { productId: product.id });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -818,10 +825,10 @@ function App() {
   const addPlasticToCart = () => {
     const newItem = {
       id: `plastic-${plasticSize}-${plasticColor}-${Date.now()}`,
-      productId: "plastic-film",
+      productId: plasticColor === "Blue" ? "plastic-film-blue" : "plastic-film-white",
       name: isArabic
-        ? "أفلام بلاستيك للأشعة"
-        : "Plastic Medical Imaging Film",
+        ? `أفلام بلاستيك ${plasticColor === "Blue" ? "أزرق" : "أبيض"} للأشعة`
+        : `${plasticColor} Plastic Medical Imaging Film`,
       image: plasticColor === "Blue" ? plasticBlueOpen : plasticWhiteOpen,
       size: plasticSize,
       dimensions: selectedPlasticVariant.dimensions,
@@ -835,7 +842,7 @@ function App() {
   };
 
   const buyPlasticNow = () => {
-    if (!isItemAvailable("plastic-film")) return;
+    if (!isItemAvailable(plasticColor === "Blue" ? "plastic-film-blue" : "plastic-film-white")) return;
     addPlasticToCart();
     navigateToPage("cart");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1144,7 +1151,7 @@ function App() {
       )}
 
       {page === "product" &&
-        selectedProduct?.id === "plastic-film" && (
+        ["plastic-film-blue", "plastic-film-white"].includes(selectedProduct?.id) && (
           <PlasticFilmPage
             isArabic={isArabic}
             gallery={plasticGallery}
@@ -1913,14 +1920,14 @@ function PlasticFilmPage({
 
             <h1>
               {isArabic
-                ? "Plastic Film للأشعة"
-                : "Plastic Medical Imaging Film"}
+                ? `أفلام بلاستيك ${plasticColor === "Blue" ? "أزرق" : "أبيض"} للأشعة`
+                : `${plasticColor} Plastic Medical Imaging Film`}
             </h1>
 
             <p className="product-detail-description">
               {isArabic
-                ? "أفلام Inkjet للطباعة الطبية، متوفرة باللون الأزرق والأبيض وبمجموعة كبيرة من المقاسات لتناسب احتياجات مراكز الأشعة."
-                : "Premium inkjet medical imaging film available in Blue and White with a wide range of sizes for radiology centers."}
+                ? `أفلام Inkjet للطباعة الطبية باللون ${plasticColor === "Blue" ? "الأزرق" : "الأبيض"} وبمقاسات متعددة.`
+                : `Premium ${plasticColor.toLowerCase()} medical inkjet imaging film in multiple sizes.`}
             </p>
 
             <ProductFeature
@@ -1934,8 +1941,8 @@ function PlasticFilmPage({
             <ProductFeature
               text={
                 isArabic
-                  ? "Blue & White بنفس السعر"
-                  : "Blue & White at the same price"
+                  ? "أفلام طبية عالية الجودة"
+                  : "High-quality medical imaging film"
               }
             />
 
@@ -1965,62 +1972,14 @@ function PlasticFilmPage({
               </div>
             </div>
 
-            <div className="selector-section">
-              <strong className="selector-label">
-                {isArabic ? "اختر اللون" : "Choose Color"}
-              </strong>
-
-              <div className="color-options">
-                <button
-                  className={
-                    plasticColor === "Blue"
-                      ? "color-option blue active"
-                      : "color-option blue"
-                  }
-                  onClick={() => {
-                    setPlasticColor("Blue");
-                    setSelectedImage(1);
-                  }}
-                >
-                  <span className="color-dot"></span>
-
-                  <div>
-                    <strong>Blue</strong>
-                    <small>
-                      {isArabic ? "فيلم أزرق" : "Blue Base Film"}
-                    </small>
-                  </div>
-
-                  {plasticColor === "Blue" && <CheckCircle2 />}
-                </button>
-
-                <button
-                  className={
-                    plasticColor === "White"
-                      ? "color-option white active"
-                      : "color-option white"
-                  }
-                  onClick={() => {
-                    setPlasticColor("White");
-                    setSelectedImage(2);
-                  }}
-                >
-                  <span className="color-dot"></span>
-
-                  <div>
-                    <strong>White</strong>
-                    <small>
-                      {isArabic ? "فيلم أبيض" : "White Film"}
-                    </small>
-                  </div>
-
-                  {plasticColor === "White" && <CheckCircle2 />}
-                </button>
-              </div>
-            </div>
+            <ProductFeature
+              text={plasticColor === "Blue"
+                ? (isArabic ? "اللون: أزرق" : "Color: Blue")
+                : (isArabic ? "اللون: أبيض" : "Color: White")}
+            />
 
             <PurchaseArea
-              inStock={isItemAvailable("plastic-film")}
+              inStock={isItemAvailable(plasticColor === "Blue" ? "plastic-film-blue" : "plastic-film-white")}
               isArabic={isArabic}
               quantity={quantity}
               setQuantity={setQuantity}
