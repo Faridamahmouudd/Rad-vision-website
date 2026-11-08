@@ -310,7 +310,7 @@ function App() {
       description: isArabic
         ? "أفلام طباعة طبية بالقاعدة الزرقاء، 100 ورقة في العبوة."
         : "Blue-base medical inkjet film, 100 sheets per box.",
-      priceFrom: 400,
+      priceFrom: 450,
     },
     {
       id: "plastic-film-white",
@@ -321,7 +321,7 @@ function App() {
       description: isArabic
         ? "أفلام طباعة طبية بالقاعدة البيضاء، 100 ورقة في العبوة."
         : "White-base medical inkjet film, 100 sheets per box.",
-      priceFrom: 400,
+      priceFrom: 450,
     },
     {
       id: "glossy-paper",
