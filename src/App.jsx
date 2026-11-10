@@ -334,7 +334,7 @@ function App() {
       description: isArabic
         ? "متوفر A3 وA4 بأوزان متعددة."
         : "Available in A3 & A4 with multiple paper weights.",
-      priceFrom: 160,
+      priceFrom: 180,
     },
     {
       id: "fuji-laser",
