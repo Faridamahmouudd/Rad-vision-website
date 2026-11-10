@@ -132,12 +132,12 @@ const plasticFilmVariants = [
 ];
 
 const glossyPaperVariants = [
-  { size: "A3", weight: "180 GSM", price: 350 },
-  { size: "A3", weight: "200 GSM", price: 360 },
-  { size: "A3", weight: "230 GSM", price: 380 },
-  { size: "A4", weight: "180 GSM", price: 160 },
-  { size: "A4", weight: "200 GSM", price: 170 },
-  { size: "A4", weight: "230 GSM", price: 180 },
+  { size: "A3", weight: "180 GSM", price: 370 },
+  { size: "A3", weight: "200 GSM", price: 390 },
+  { size: "A3", weight: "230 GSM", price: 415 },
+  { size: "A4", weight: "180 GSM", price: 180 },
+  { size: "A4", weight: "200 GSM", price: 190 },
+  { size: "A4", weight: "230 GSM", price: 200 },
 ];
 
 const fujiLaserVariants = [
