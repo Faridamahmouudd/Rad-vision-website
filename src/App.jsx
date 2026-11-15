@@ -29,6 +29,10 @@ import heroRadiology from "./assets/hero-radiology-new.png";
 
 import plasticFilm from "./assets/products/plastic-film.png";
 import glossyPaper from "./assets/products/glossy-paper.png";
+import fashionColorInkFront from "./assets/products/fashioncolor-black-ink-front.jpg";
+import fashionColorInkBack from "./assets/products/fashioncolor-black-ink-back.jpg";
+import epson103Front from "./assets/products/epson-103-black-front.png";
+import epson103Back from "./assets/products/epson-103-black-back.png";
 import epson869 from "./assets/products/epson-869r.jpg";
 import huqPrinter from "./assets/products/huq-printer.jpg";
 import huqFilm from "./assets/products/huq-thermal-film.jpg";
@@ -93,6 +97,8 @@ const PRODUCT_AVAILABILITY = {
   "plastic-film-blue": true,
   "plastic-film-white": true,
   "glossy-paper": true,
+  "fashioncolor-black-ink": true,
+  "epson-103-black": true,
   "fuji-laser": true,
   "fuji-diht": true,
   "huq-film": true,
@@ -102,8 +108,8 @@ const PRODUCT_AVAILABILITY = {
   "acma-auto-fixer": true,
   "acma-manual-fixer": true,
   "acma-manual-developer": true,
-  "fuji-green": true,
-  "fuji-blue": true,
+  "fuji-green": false,
+  "fuji-blue": false,
   "epson-869r": true,
   "epson-wf-m5299": true,
   "huq-thermal": true,
@@ -122,22 +128,22 @@ function StockNotice({ isArabic }) {
 }
 
 const plasticFilmVariants = [
-  { size: "A3", dimensions: "29.7 × 42 cm", price: 1000 },
-  { size: "A4", dimensions: "21 × 29.7 cm", price: 500 },
-  { size: "8×10", dimensions: "20.3 × 25.4 cm", price: 450 },
+  { size: "A3", dimensions: "29.7 × 42 cm", price: 900 },
+  { size: "A4", dimensions: "21 × 29.7 cm", price: 450 },
+  { size: "8×10", dimensions: "20.3 × 25.4 cm", price: 400 },
   { size: "11×14", dimensions: "27.9 × 35.6 cm", price: 800 },
-  { size: "A3+", dimensions: "33 × 45 cm", price: 1050 },
-  { size: "B4", dimensions: "25.7 × 36.4 cm", price: 700 },
+  { size: "A3+", dimensions: "33 × 45 cm", price: 1250 },
+  { size: "B4", dimensions: "25.7 × 36.4 cm", price: 675 },
   { size: "10×12", dimensions: "25.4 × 30.5 cm", price: 650 },
 ];
 
 const glossyPaperVariants = [
-  { size: "A3", weight: "180 GSM", price: 370 },
-  { size: "A3", weight: "200 GSM", price: 390 },
-  { size: "A3", weight: "230 GSM", price: 415 },
-  { size: "A4", weight: "180 GSM", price: 180 },
-  { size: "A4", weight: "200 GSM", price: 190 },
-  { size: "A4", weight: "230 GSM", price: 200 },
+  { size: "A3", weight: "180 GSM", price: 350 },
+  { size: "A3", weight: "200 GSM", price: 360 },
+  { size: "A3", weight: "230 GSM", price: 380 },
+  { size: "A4", weight: "180 GSM", price: 160 },
+  { size: "A4", weight: "200 GSM", price: 170 },
+  { size: "A4", weight: "230 GSM", price: 180 },
 ];
 
 const fujiLaserVariants = [
@@ -207,6 +213,8 @@ const searchAliases = {
     "افلام بلاستيك ازرق للاشعة فيلم ازرق اشعة افلام طبية inkjet plastic medical imaging film blue film a3 a4 8x10 11x14 b4",
   "plastic-film-white":
     "افلام بلاستيك ابيض للاشعة فيلم ابيض اشعة افلام طبية inkjet plastic medical imaging film white film a3 a4 8x10 11x14 b4",
+  "fashioncolor-black-ink": "حبر اسود ايبسون فاشون كلر لتر 1000 مل ink black epson fashioncolor fashion color 1 liter 1000ml",
+  "epson-103-black": "حبر ايبسون اصلي اسود 103 70 مل epson original genuine black ink 103 70ml ecotank",
   "glossy-paper":
     "ورق جلوسي ورق glossy photo paper nour a3 a4 180 gsm 200 gsm 230 gsm",
   "fuji-laser":
@@ -310,7 +318,7 @@ function App() {
       description: isArabic
         ? "أفلام طباعة طبية بالقاعدة الزرقاء، 100 ورقة في العبوة."
         : "Blue-base medical inkjet film, 100 sheets per box.",
-      priceFrom: 450,
+      priceFrom: 400,
     },
     {
       id: "plastic-film-white",
@@ -321,7 +329,25 @@ function App() {
       description: isArabic
         ? "أفلام طباعة طبية بالقاعدة البيضاء، 100 ورقة في العبوة."
         : "White-base medical inkjet film, 100 sheets per box.",
-      priceFrom: 450,
+      priceFrom: 400,
+    },
+    {
+      id: "fashioncolor-black-ink",
+      inStock: isItemAvailable("fashioncolor-black-ink"),
+      image: fashionColorInkFront,
+      category: isArabic ? "أحبار الطابعات" : "Printer Inks",
+      name: isArabic ? "حبر فاشون كلر أسود لطابعات إبسون – 1 لتر" : "Fashion Color Black Ink for Epson – 1 Liter",
+      description: isArabic ? "حبر Inkjet أسود لطابعات إبسون، عبوة 1000 مل." : "Black inkjet ink for Epson printers, 1000 ml bottle.",
+      priceFrom: 700,
+    },
+    {
+      id: "epson-103-black",
+      inStock: isItemAvailable("epson-103-black"),
+      image: epson103Front,
+      category: isArabic ? "أحبار الطابعات" : "Printer Inks",
+      name: isArabic ? "حبر إبسون 103 أصلي أسود – 70 مل" : "Epson 103 Original Black Ink – 70 ml",
+      description: isArabic ? "حبر إبسون EcoTank أصلي، لون أسود، عبوة 70 مل." : "Genuine Epson EcoTank black ink, 70 ml bottle.",
+      priceFrom: 500,
     },
     {
       id: "glossy-paper",
@@ -334,7 +360,7 @@ function App() {
       description: isArabic
         ? "متوفر A3 وA4 بأوزان متعددة."
         : "Available in A3 & A4 with multiple paper weights.",
-      priceFrom: 180,
+      priceFrom: 160,
     },
     {
       id: "fuji-laser",
@@ -622,6 +648,22 @@ function App() {
   const sonyUppGallery = [sonyUpp, sonyUppDetail1, sonyUppDetail2, sonyUppDetail3, sonyUppDetail4, sonyUppDetail5];
 
   const catalogProducts = {
+    "epson-103-black": {
+      name: isArabic ? "حبر إبسون 103 أصلي أسود" : "Epson 103 Original Black Ink",
+      category: isArabic ? "أحبار الطابعات" : "PRINTER INK",
+      gallery: [epson103Front, epson103Back],
+      variants: [{ size: isArabic ? "عبوة 70 مل" : "70 ml Bottle", price: 500 }],
+      features: isArabic ? ["العلامة التجارية: Epson", "حبر أصلي", "اللون: أسود", "السعة: 70 مل", "سلسلة 103 لطابعات EcoTank المتوافقة"] : ["Brand: Epson", "Genuine Epson ink", "Color: Black", "Volume: 70 ml", "103 series for compatible EcoTank printers"],
+      details: ["Epson 103", "Original Black Ink", "70 ml", "EGP 500"],
+    },
+    "fashioncolor-black-ink": {
+      name: isArabic ? "حبر فاشون كلر أسود لطابعات إبسون" : "Fashion Color Black Ink for Epson Printers",
+      category: isArabic ? "أحبار الطابعات" : "PRINTER INK",
+      gallery: [fashionColorInkFront, fashionColorInkBack],
+      variants: [{ size: isArabic ? "عبوة 1000 مل (1 لتر)" : "1000 ml (1 Liter) Bottle", price: 700 }],
+      features: isArabic ? ["العلامة التجارية: فاشون كلر", "اللون: أسود", "السعة: 1000 مل (1 لتر)", "لطابعات إبسون النافثة للحبر"] : ["Brand: Fashion Color", "Color: Black", "Volume: 1000 ml (1 Liter)", "For Epson inkjet printers"],
+      details: ["Fashion Color", "Black Inkjet Ink", "1000 ml / 1 Liter", "EGP 700"],
+    },
     skydent: {
       name: "SKYDENT Dental Film",
       category: isArabic ? "أفلام أسنان" : "DENTAL X-RAY FILM",
@@ -808,7 +850,7 @@ function App() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    if (["skydent", "acma", "acma-auto-fixer", "acma-manual-fixer", "acma-manual-developer", "fuji-green", "fuji-blue"].includes(product.id)) {
+    if (["skydent", "acma", "acma-auto-fixer", "acma-manual-fixer", "acma-manual-developer", "fuji-green", "fuji-blue", "fashioncolor-black-ink", "epson-103-black"].includes(product.id)) {
       setSelectedProduct(product);
       setSelectedImage(0);
       setQuantity(1);
