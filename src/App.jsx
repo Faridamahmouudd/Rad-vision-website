@@ -30,7 +30,7 @@ import heroRadiology from "./assets/hero-radiology-new.png";
 import plasticFilm from "./assets/products/plastic-film.png";
 import glossyPaper from "./assets/products/glossy-paper.png";
 import fashionColorInkFront from "./assets/products/fashioncolor-black-ink-front.jpg";
-import fashionColorInkBack from "./assets/products/fashioncolor-black-ink-back.jpg";
+const fashionColorInkBack = fashionColorInkFront; // Use existing front image until back image is added
 import epson103Front from "./assets/products/epson-103-black-front.png";
 import epson103Back from "./assets/products/epson-103-black-back.png";
 import epson869 from "./assets/products/epson-869r.jpg";
