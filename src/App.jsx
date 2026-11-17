@@ -29,6 +29,8 @@ import heroRadiology from "./assets/hero-radiology-new.png";
 
 import plasticFilm from "./assets/products/plastic-film.png";
 import glossyPaper from "./assets/products/glossy-paper.png";
+import rcGlossyRollStanding from "./assets/products/rc-glossy-roll-standing.png";
+import rcGlossyRollHorizontal from "./assets/products/rc-glossy-roll-horizontal.png";
 import fashionColorInkFront from "./assets/products/fashioncolor-black-ink-front.jpg";
 const fashionColorInkBack = fashionColorInkFront; // Use existing front image until back image is added
 import epson103Front from "./assets/products/epson-103-black-front.png";
@@ -97,6 +99,7 @@ const PRODUCT_AVAILABILITY = {
   "plastic-film-blue": true,
   "plastic-film-white": true,
   "glossy-paper": true,
+  "rc-glossy-roll": true,
   "fashioncolor-black-ink": true,
   "epson-103-black": true,
   "fuji-laser": true,
@@ -215,6 +218,7 @@ const searchAliases = {
     "افلام بلاستيك ابيض للاشعة فيلم ابيض اشعة افلام طبية inkjet plastic medical imaging film white film a3 a4 8x10 11x14 b4",
   "fashioncolor-black-ink": "حبر اسود ايبسون فاشون كلر لتر 1000 مل ink black epson fashioncolor fashion color 1 liter 1000ml",
   "epson-103-black": "حبر ايبسون اصلي اسود 103 70 مل epson original genuine black ink 103 70ml ecotank",
+  "rc-glossy-roll": "رول جلوسي ابيض ار سي rc glossy white paper roll 14 inch 30 meter 14x17 11x14",
   "glossy-paper":
     "ورق جلوسي ورق glossy photo paper nour a3 a4 180 gsm 200 gsm 230 gsm",
   "fuji-laser":
@@ -361,6 +365,17 @@ function App() {
         ? "متوفر A3 وA4 بأوزان متعددة."
         : "Available in A3 & A4 with multiple paper weights.",
       priceFrom: 160,
+    },
+    {
+      id: "rc-glossy-roll",
+      inStock: isItemAvailable("rc-glossy-roll"),
+      image: rcGlossyRollStanding,
+      category: isArabic ? "رولات ورق جلوسي" : "Glossy Paper Rolls",
+      name: isArabic ? "رول ورق جلوسي أبيض RC – 14 بوصة × 30 متر" : "RC White Glossy Paper Roll – 14 in × 30 m",
+      description: isArabic
+        ? "رول RC جلوسي أبيض، ينتج حوالي 71 فيلم 14×17 أو 100 فيلم 11×14 حسب القص."
+        : "White RC glossy roll; yields approximately 71 sheets of 14×17 or 100 sheets of 11×14, depending on cutting.",
+      priceFrom: 500,
     },
     {
       id: "fuji-laser",
@@ -648,6 +663,16 @@ function App() {
   const sonyUppGallery = [sonyUpp, sonyUppDetail1, sonyUppDetail2, sonyUppDetail3, sonyUppDetail4, sonyUppDetail5];
 
   const catalogProducts = {
+    "rc-glossy-roll": {
+      name: isArabic ? "رول ورق جلوسي أبيض RC" : "RC White Glossy Photo Paper Roll",
+      category: isArabic ? "رولات ورق جلوسي" : "GLOSSY PAPER ROLLS",
+      gallery: [rcGlossyRollStanding, rcGlossyRollHorizontal],
+      variants: [{ size: isArabic ? "عرض 14 بوصة × طول 30 متر" : "14 in Width × 30 m Length", price: 500 }],
+      features: isArabic
+        ? ["النوع: RC جلوسي أبيض", "العرض: 14 بوصة", "الطول: 30 متر", "ينتج حوالي 71 فيلم مقاس 14×17", "ينتج حوالي 100 فيلم مقاس 11×14", "العدد الفعلي حسب طريقة القص"]
+        : ["Type: White RC Glossy", "Width: 14 inches", "Length: 30 meters", "Approximately 71 sheets at 14×17", "Approximately 100 sheets at 11×14", "Actual yield depends on cutting"],
+      details: ["White RC Glossy", "14 in × 30 m", "71 × 14×17 / 100 × 11×14", "EGP 500 / Roll"],
+    },
     "epson-103-black": {
       name: isArabic ? "حبر إبسون 103 أصلي أسود" : "Epson 103 Original Black Ink",
       category: isArabic ? "أحبار الطابعات" : "PRINTER INK",
@@ -850,7 +875,7 @@ function App() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    if (["skydent", "acma", "acma-auto-fixer", "acma-manual-fixer", "acma-manual-developer", "fuji-green", "fuji-blue", "fashioncolor-black-ink", "epson-103-black"].includes(product.id)) {
+    if (["skydent", "acma", "acma-auto-fixer", "acma-manual-fixer", "acma-manual-developer", "fuji-green", "fuji-blue", "fashioncolor-black-ink", "epson-103-black", "rc-glossy-roll"].includes(product.id)) {
       setSelectedProduct(product);
       setSelectedImage(0);
       setQuantity(1);
